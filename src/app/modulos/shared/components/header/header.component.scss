@@ -1,0 +1,61 @@
+.header {
+    &__logo {
+        
+        width: 90px;
+        height: 90px;/*
+        &.paris {
+            background-image: url('assets/paris/paris-logo.svg');
+        }
+        &.johnson {
+            background-image: url('assets/johnson/johnson-logo.svg');
+        }*/
+    }
+    
+}
+
+.info-user {
+        display: flex;
+        align-items: center;
+        &__link {
+            color: var(--color-1);
+            font-size: 24px;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            .avatar {
+                width: 40px;
+                height: 40px;
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+                .header__logo {
+                    width: 40px;
+                    height: 40px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    top: 10px;
+                    left: 50%;
+                    &.paris {
+                        background-image: url('/CencosudBO/assets/paris/paris-logo.svg');
+                    }
+                    &.johnson {
+                        background-image: url('/CencosudBO/assets/johnson/johnson-logo.svg');
+                    }
+                    &.aligare {
+                        background-image: url('/CencosudBO/assets/aligare/aligare-logo.png');
+                    }
+                  } 
+            }
+            p {
+                font-size: 12px;
+                padding-left: 5px;
+            }
+            i {
+                font-size: 10px;
+                padding-left: 3px;
+            }
+        }
+
+    }

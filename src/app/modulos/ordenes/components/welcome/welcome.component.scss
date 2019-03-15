@@ -1,0 +1,85 @@
+@import './../../../../../scss/variables';
+.menu {
+  &-label {
+    color: var(--color-1);
+    padding: 7px 0;
+    height: auto;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid #0094c6;
+  }
+}
+
+.box {
+    &.box-height-full {
+        height: 100%;
+    }
+  &.block-color-primary {
+    background-color: $dash-indigo;
+    .title,
+    .subtitle {
+      color: #ffffff;
+    }
+  }
+  &.block-color-info {
+    background-color: $dash-magenta;
+    .title,
+    .subtitle {
+      color: #ffffff;
+    }
+  }
+  &.block-color-success {
+    background-color: $dash-azul;
+    .title,
+    .subtitle {
+      color: #ffffff;
+    }
+  }
+}
+
+.block-info-group {
+  display: flex;
+}
+canvas {
+  height: 300px;
+}
+
+
+
+.dashboard-wrapper {
+    padding-left: 100px;
+    transform: translateX(0);
+    transition: all .3s;
+    &__open {
+        transform: translateX(251px);
+    }
+}
+
+
+
+
+.labels {
+    display: flex;
+    &__label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        margin-right: 10px;
+    }
+    &__color {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border-radius: 50%;
+        flex: 0 0 20px;
+    }
+    &__text {
+        padding-left: 5px;
+        line-height: 110%;
+    }
+}
+
+#cardMedioPago {
+ height: 100%
+}

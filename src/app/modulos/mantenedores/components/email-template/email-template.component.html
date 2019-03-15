@@ -1,0 +1,211 @@
+<ng4-loading-spinner [threshold]="0"  [loadingText]="'Please wait...'" [zIndex]="999" ></ng4-loading-spinner>
+<div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Email Template - B&uacute;squeda
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </a>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <form action="">
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Email</label>
+                       <div class="control">
+                          <div class="select">
+                            <select name="idEmail" #idEmailSearch>
+                              <option value="-1">Todos los Email</option>
+                              <option *ngFor="let listEmailTemplate of listEmailTemplates" [value]="listEmailTemplate.idEmail">
+                                {{listEmailTemplate.description | uppercase}}
+                              </option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Nombre</label>
+                      <div class="control">
+                        <input class="input" type="text" placeholder="Nombre"   #nameSearch maxlength="20">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Descripcion</label>
+                      <div class="control">
+                        <input class="input" type="text" placeholder="Descripcion" maxlength="50" #descriptionSearch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Asunto</label>
+                      <div class="control">
+                        <input class="input" type="text" placeholder="Asunto" maxlength="50" #subjectSearch>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <p class="control">
+                        <button  class="button is-success" (click)="doSearchEmailTemplate(idEmailSearch.value, nameSearch.value, descriptionSearch.value, subjectSearch.value)">
+                          Buscar
+                        </button>
+                        <!--
+                        <img *ngIf="emailInfo.loadings" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                      />
+                        -->
+                       <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                          Limpiar
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('idEmail')">Id</th>
+                  <th (click)="sortProperty('description')">Description</th>
+                  <th (click)="sortProperty('subject')">Asunto</th>
+                  <th (click)="sortProperty('from')">De </th>
+                  <th (click)="sortProperty('name')">Nombre</th>
+                  <th (click)="sortProperty('filnename')">Nombre Archivo</th>
+                  <th>Acci&oacute;n</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let email of results | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{email.idEmail}}</th>
+                  <td>{{email.description}}</td>
+                  <td>{{email.subject}}</td>
+                  <td>{{email.from}}</td>
+                  <td>{{email.name}}</td>
+                  <td>{{email.filename}}</td>
+                  <td>
+                    <div *ngIf="editable; else desactivado">
+                     <button [disabled]="false" class="button is-small is-success" (click)="searchEmailTemplateDetail(email.idEmail, email.name, email.description, email.subject, email.from, email.filename)" >Editar</button>
+                     <button [disabled]="false" class="button is-small is-success" (click)="showEmailTemplate(email.idEmail, email.name, email.description, email.subject,email.body)" >Previsualizaci&oacute;n
+
+                  </button>
+
+                    </div>
+                    <ng-template #desactivado>
+                      <button [disabled]="true" class="button is-small is-success" (click)="searchEmailTemplateDetail(email.idEmail, email.name, email.description, email.subject, email.from)" >Editar</button>
+                      <button [disabled]="true" class="button is-small is-success" (click)="showEmailTemplate(email.idEmail, email.name, email.description, email.subject,email.body)" >Previsualizaci&oacute;n</button>
+
+                    </ng-template>
+                  </td>
+                </tr>
+
+              </tbody>
+             </table>
+            <pagination-controls (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+            <!--<a *ngIf='emailInfo.results.length > 0' class="button is-small is-success" (click)="doExport()">Exportar</a>-->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <modal #myModalEmailInfo>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Editar Template Email</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table">
+              <tr>
+                <th>Id</th>
+                <td>{{editarMail.idEmail}}</td>
+                 <td><input  class="input" type="hidden" #idEmail value="{{editarMail.idEmail}}"></td>
+              </tr>
+              <tr>
+                <th>Descripcion</th>
+                <td><input  class="input" minLength="3" maxLength="100" type="text" value="{{editarMail.description}}" #emailDescription/></td>
+              </tr>
+              <tr>
+                <th>Asunto</th>
+                <td><input  class="input" minLength="3" maxLength="50" type="text" value="{{editarMail.subject}}" #emailSubject/></td>
+              </tr>
+              <tr>
+                <th>De</th>
+                <td><input  class="input" minLength="3" maxLength="50" type="email" value="{{editarMail.from}}" #emailFrom/></td>
+
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td><input  class="input" minLength="3" maxLength="50" type="text" value="{{editarMail.name}}" #emailName/></td>
+              </tr>
+              <tr>
+                <th>Nombre Archivo</th>
+                <td><input class="input" disabled type="text" value="{{editarMail.filename}}" #emailName/></td>
+              </tr>
+              <tr>
+                <th>Template</th>
+                <td>
+                  <input  name="imageUrl" type="file" accept=".doc, .docx, .html" (change)="handleInputChange2($event)" mat-button color="primary" #emailBody/>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td>
+                      <button class="button is-success"  (click)="updateEmailTemplate(idEmail.value, emailDescription.value, emailSubject.value, emailFrom.value, editarMail.name, emailBody.value)">Editar</button>
+                      <!--
+                        <img *ngIf="emailInfo.loadingModificarEmail" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                      -->
+                      <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+                    </td>
+                </tr>
+        </table>
+        </accordion-group>
+
+
+      </accordion>
+    </modal-content>
+    <!--
+    <modal-footer>
+      <div *ngFor="let details of searchInfoforEmail.resultsDetail.saleDetail">
+        <button class="button is-success" [routerLink]="['/back-office/order/', details.ordernumber]">Ver Detalle</button>
+        <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      </div>
+    </modal-footer>
+  -->
+  </modal>
+<modal #myModalEmailShow>
+    <modal-header>
+      <h1>Previsualizaci&oacute;n Email Template</h1>
+    </modal-header>
+    <modal-content>
+      <div [innerHTML]="contentBody | keepHtml"></div>
+    </modal-content>
+     <modal-footer>
+        <button class="button is-success" (click)="myModalEmailShow.close()">Cerrar</button>
+    </modal-footer>
+  </modal>

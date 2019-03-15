@@ -1,0 +1,148 @@
+<!-- START NAV -->
+<nav class="navbar" role="navigation" aria-label="dropdown navigation">
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item has-dropdown is-hoverable"> 
+        <!-- [class.is-active]="userNotification"> -->
+        <a class="info-user__link">
+          <!-- <span class="ti-bell"></span> -->
+        </a>
+
+        <!-- <div class="navbar-dropdown is-right">
+          <a class="navbar-item">
+            Notificacion uno
+          </a>
+          <a class="navbar-item">
+            Notificacion uno
+          </a>
+          <a class="navbar-item">
+            Notificacion uno
+          </a>
+        </div> -->
+      </div>
+
+      <div class="navbar-item has-dropdown info-user is-hoverable">
+         <!-- [class.is-active]="userShow"> -->
+        <a class="info-user__link">
+          <div class="avatar user-info__avatar">
+            <div class="header__logo {{logo}}"></div>
+          </div>
+          <p>{{usuario.name}} {{usuario.lastame}}</p>
+          <i class="ti-angle-down"></i>
+        </a>
+
+        <div class="navbar-dropdown is-right">
+          <a class="navbar-item" (click)="openProfile()">
+            Mi Perfil
+          </a>
+          <hr class="navbar-divider">
+          <div class="navbar-item">
+            <a class="navbar-item" (click)="logout()">
+                Salir
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!--div class="navbar-end">
+        <div class="info-user">
+          <a class="info-user__link" href="javascript:;">
+            <span class="ti-bell"></span>
+          </a>
+          <a class="info-user__link" href="javascript:;">
+            <span class="ti-bolt"></span>
+          </a>
+          <a class="info-user__link" href="javascript:;">
+            <span class="ti-user"></span>
+          </a>
+        </div>
+        
+  
+
+      </div-->
+
+<modal #myProfile>
+  <modal-header>
+    <h1>Perfil Usuario</h1>
+  </modal-header>
+  <modal-content>
+             <form name="form">
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                      <label class="label">Usuario</label>
+                    </div>
+                    <div class="field-body">
+                      <div class="field">
+                        <p class="control">
+                          <input class="input" type="text"   value="{{usuario.username}}" readonly="true">
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-columns">
+                <div class="form-column">
+                    <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                      <label class="label">Nombre</label>
+                    </div>
+                    <div class="field-body">
+                      <div class="field">
+                        <p class="control">
+                          <input class="input" type="text"   value="{{usuario.name}} {{usuario.lastame}}" readonly="true">
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                      <label class="label">Correo</label>
+                    </div>
+                    <div class="field-body">
+                      <div class="field">
+                        <p class="control">
+                          <input class="input" type="text" value="{{usuario.email}}" readonly="true">
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                      <label class="label">Perfil</label>
+                    </div>
+                    <div class="field-body">
+                      <div class="field">
+                        <p class="control">
+                          <input class="input" type="text" value="{{usuario.profileName}}" readonly="true">
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+  </modal-content>
+  <modal-footer>
+    <button class="button is-success" (click)="myProfile.close()">Cerrar</button>
+  </modal-footer>
+</modal>
+
+

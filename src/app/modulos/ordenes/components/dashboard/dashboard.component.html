@@ -1,0 +1,275 @@
+<div class="container is-fluid">
+
+<!--BEGIN Cajas de totales, dashboard antiguo-->
+
+    <section class="columns is-multiline">
+        <div class="column is-narrow-mobile is-4-tablet is-2-desktop">
+            <div class="box box-height-full">
+                <div *ngIf="recibidasDone">
+                    <app-block-info title="Total OC recibidas" [number]="recibidas | format: 'es'" [percent]="140" [failed]="recibidasFallidas | format: 'es'"></app-block-info>
+                </div>
+            </div>
+        </div>
+        <div class="column is-narrow-mobile is-4-tablet is-2-desktop">
+            <div class="box box-height-full">
+                <div *ngIf="odCreadasDone">
+                    <app-block-info title="Total OD creadas" [number]="odCreadas | format: 'es'" [percent]="19" [failed]="odCreadasFallidas | format: 'es'">
+                        <div class="app-block-info__failed"></div>
+                    </app-block-info>
+                </div>
+            </div>
+        </div>
+        <div class="column is-narrow-mobile is-4-tablet is-2-desktop">
+            <div class="box box-height-full">
+                <div *ngIf="dteCreadasDone">
+                    <app-block-info title="Total DTE creadas" [number]="dteCreadas | format: 'es'" [percent]="14" [failed]="dteCreadasFallidas | format: 'es'">
+                        <div class="app-block-info__failed"></div>
+                    </app-block-info>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-narrow-mobile is-4-tablet is-2-desktop">
+            <div class="box box-height-full">
+                <div *ngIf="sdvDone">
+                    <app-block-info title="Total OC registradas SDV" [number]="sdv | format: 'es'" [percent]="23" [failed]="sdvFallidas | format: 'es'"></app-block-info>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="column is-narrow-mobile is-4-tablet is-2-desktop">
+            <div class="box box-height-full">
+                <div *ngIf="cerradasDone">
+                    <app-block-info title="Total OC cerradas" [number]="cerradas | format: 'es'" [percent]="34" [failed]="cerradasFallidas | format: 'es'"></app-block-info>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-narrow-mobile is-4-tablet is-2-desktop">
+            <div class="box box-height-full">
+                <div *ngIf="cerradasDone">
+                    <app-block-info title="Promedio OC/Hora" [number]="promedio" [percent]="140" [failed]="0"></app-block-info>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--END Cajas de totales, dashboard antiguo-->
+
+<!--BEGIN dashboard nuevo-->
+<!--
+    <section class="columns cajas-resumen">
+        <div class="column">
+            <span>Ordenes de Compra</span>
+            <div class="box box-height-full">
+                <table class="table is-fullwidth">
+                    <tr *ngFor="let item of ordenesCompra; let last = last">
+                        <th>{{item.concepto}}</th>
+                        <td>{{item.cantidad}}</td>
+                        <td>{{item.porcentaje | number: '1.0-2'}} %</td>
+                        <td class="td-indicador" *ngIf="last">
+                            <div class="indicador" [ngClass]="{'rojo': item.porcentaje>=5, 'verde': item.porcentaje<5}">
+                                <div class="detalle-enproceso">
+                                    <table>
+                                        <tr *ngFor="let errCount of ltErroneousCounts">
+                                            <td>{{errCount.origin}}:</td>
+                                            <td>{{errCount.count}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+TODO: integrar con servicio
+                <div class="notification is-danger has-text-centered" *ngIf="false">
+                    Advertencia incomunicaci&oacute;n con legado
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-3">
+            <span>Ventas</span>
+            <div class="box box-height-full">
+                <p class="dotloading" *ngIf="paymentsLoading">Cargando</p>
+                <table class="table is-fullwidth" *ngIf="!paymentsLoading">
+                    <tr *ngFor="let item of resumenVentas?.items">
+                        <th>{{item.descripcion}}</th>
+                        <td class="has-text-weight-bold has-text-right">{{item.monto | currency:'CLP':'symbol-narrow':'1.0'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="column is-5">
+            <span>Despacho</span>
+            <div class="box box-height-full">
+                <table class="table is-fullwidth" *ngIf="despachoFlag">
+                    <tr>
+                        <th></th>
+                        <td *ngFor="let des of despachoDias[0]?.despacho">
+                            {{des.fecha}}
+                        </td>
+                    </tr>
+                    <tr [ngClass]="{'resaltar': erroneousOEM?.titulo=='Sin Asignaci&oacute;n'}">
+                        <th> {{erroneousOEM?.titulo}}</th>
+                        <td> {{erroneousOEM?.contador}} </td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr *ngFor="let item of despachoDias">
+                        <th>{{item.titulo}}</th>
+                        <td *ngFor="let desp of item.despacho">
+                            {{desp.contador}}
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="table is-fullwidth" *ngIf="!despachoFlag">
+                    <tr>
+                        <th></th>
+                        <td>{{despachoFecha1 | date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{despachoFecha2 | date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{despachoFecha3 | date:'dd/MM/yyyy'}}
+                        </td>
+                    </tr>
+
+                    <tr [ngClass]="{'resaltar': erroneousOEM?.titulo=='Sin Asignaci&oacute;n'}">
+                        <th> {{erroneousOEM?.titulo}}</th>
+                        <td> {{erroneousOEM?.contador}} </td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr *ngFor="let item of despachoDias">
+                        <th>{{item.titulo}}</th>
+                        <td>
+                            0
+                        </td>
+                        <td>
+                            0
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </section>
+-->
+<!--END dashboard nuevo-->
+
+    <div class="columns">
+        <div class="column is-12">
+            <div class="card card--select-header">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Performance MTD en tienda Paris.cl
+                    </p>
+                    <div class="select">
+                        <select>
+                        <option>Canal: Paris.cl</option>
+                    </select>
+                    </div>
+                </header>
+                <div class="card-content" *ngIf="dataFrequency">
+                    <div class="content" style="height:300px">
+                        <canvas baseChart height="300" width="300" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [chartType]="lineChartType"></canvas>
+                    </div>
+                    <div class="labels">
+                        <div class="labels__label" *ngFor="let label of labels">
+                            <span class="labels__color" [ngStyle]="{ 'background-color': label.borderColor}"></span>
+                            <p class="labels__text">{{label.frecuencyData}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-6">
+            <div class="card" id="cardMedioPago">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Listado por medio de pago
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Medio de Pago</th>
+                                    <td><strong>Pesos</strong></td>
+                                </tr>
+                                <tr *ngIf="payments?.length === 0 ">
+                                    <td colspan="2">No se encontraron datos</td>
+                                </tr>
+                                <tr *ngFor="let payment of payments">
+                                    <th>{{payment.paymentMethod}}</th>
+                                    <td>{{payment.sumPayment | format: 'es'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-6">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Listado por canal de venta
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <table class="table">
+
+                            <tbody>
+                                <tr>
+                                    <td><strong>Canal</strong></td>
+                                    <td><strong>Cantidad</strong></td>
+                                    <td><strong>Pesos</strong></td>
+                                </tr>
+                                <tr *ngIf="listingBySalesChannels?.length === 0 ">
+                                    <td colspan="3">No se encontraron datos</td>
+                                </tr>
+                                <tr *ngFor="let listingBySalesChannel of listingBySalesChannels">
+                                    <th>{{listingBySalesChannel.channel}}</th>
+                                    <td>
+                                        {{listingBySalesChannel.totalOrders | format: 'es'}}
+                                    </td>
+                                    <td>
+                                        {{listingBySalesChannel.sumPayment | format: 'es'}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-12">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Gr&aacute;fico Venta Devolución
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content" *ngIf="barChartData !== undefined">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" [colors]="barChartColors"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

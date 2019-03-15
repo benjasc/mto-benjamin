@@ -1,0 +1,238 @@
+<div id="app">
+    <section class="main-content columns is-fullheight">
+
+        <aside class="column is-3 is-narrow-mobile is-fullheight section is-hidden-mobile">
+            <p class="menu-label is-hidden-touch">Sistema de Gestion de Ordenes</p>
+            <table datatable [dtOptions]="dtOptions" class="row-border hover ">
+                <thead>
+                    <tr>
+                        <th>Rut</th>
+                        <th>Nombre</th>
+                        <th>N°OC</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Foo</td>
+                        <td>Someone</td>
+
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Someone</td>
+                        <td>Someone</td>
+
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Iamout</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Yoda</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Patrick</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Barack</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>François</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Michel</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Chuck</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Simon</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Louis</td>
+                        <td>Someone</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Zelda</td>
+                        <td>Someone</td>
+                    </tr>
+                </tbody>
+            </table>
+        </aside>
+
+        <div class="container column is-9">
+            <div class="section">
+                <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                    <mat-step [stepControl]="firstFormGroup">
+                        <form [formGroup]="firstFormGroup">
+                            <ng-template matStepLabel>Cliente</ng-template>
+                            <div class="card">
+                                <div class="card-header">
+                                    <p class="card-header-title">Datos del Cliente</p>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div class="columns">
+                                            <div class="column is-one-third">
+                                                <div class="field">
+                                                    <label class="">Nombre</label>
+                                                    <div class="control">
+                                                        <input class="input is-small" type="text" placeholder="Text input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <div class="field">
+                                                    <label class="">Rut</label>
+                                                    <div class="control">
+                                                        <input class="input is-small" type="text" placeholder="Text input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <div class="field">
+                                                    <label class="">Telefono</label>
+                                                    <div class="control">
+                                                        <input class="input is-small" type="text" placeholder="Text input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="columns">
+                                            <div class="column ">
+                                                <div class="field">
+                                                    <label class="">Email</label>
+                                                    <div class="control">
+                                                        <input class="input is-small" type="text" placeholder="Text input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="column ">
+                                                <div class="field">
+                                                    <label class="">Direccion</label>
+                                                    <div class="control">
+                                                        <input class="input is-small" type="text" placeholder="Text input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="card is-hidden1">
+                                <div class="card-header">
+                                    <p class="card-header-title">Productos Comprados</p>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div class="example-container mat-elevation-z8" style="height: 200px;">
+                                            <mat-table #table [dataSource]="dataSource">
+
+                                                <!--- Note that these columns can be defined in any order.
+                                                    The actual rendered columns are set as a property on the row definition" -->
+
+                                                <!-- Position Column -->
+                                                <ng-container matColumnDef="SKU">
+                                                    <mat-header-cell *matHeaderCellDef> SKU </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.SKU}} </mat-cell>
+                                                </ng-container>
+
+                                                <!-- Name Column -->
+                                                <ng-container matColumnDef="Producto">
+                                                    <mat-header-cell *matHeaderCellDef> Producto </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.Producto}} </mat-cell>
+                                                </ng-container>
+
+                                                <!-- Weight Column -->
+                                                <ng-container matColumnDef="Precio">
+                                                    <mat-header-cell *matHeaderCellDef> Precio</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.Precio}} </mat-cell>
+                                                </ng-container>
+
+                                                <!-- Symbol Column -->
+                                                <ng-container matColumnDef="FechaCompra">
+                                                    <mat-header-cell *matHeaderCellDef> FechaCompra </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.FechaCompra}} </mat-cell>
+                                                </ng-container>
+                                                <!-- Symbol Column -->
+                                                <ng-container matColumnDef="Canal">
+                                                    <mat-header-cell *matHeaderCellDef> Canal </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.Canal}} </mat-cell>
+                                                </ng-container>
+                                                <!-- Symbol Column -->
+                                                <ng-container matColumnDef="EstadoDesp">
+                                                    <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.EstadoDesp}} </mat-cell>
+                                                </ng-container>
+
+                                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                            </mat-table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                        </form>
+                        <div>
+                            <button mat-button matStepperNext class="button is-link is-pulled-right">Siguiente</button>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="secondFormGroup">
+                        <form [formGroup]="secondFormGroup">
+                            <ng-template matStepLabel>Orden de Compra</ng-template>
+
+                            <input matInput placeholder="Address" formControlName="secondCtrl" required>
+                            <div>
+                                <button mat-button matStepperPrevious>Back</button>
+                                <button mat-button matStepperNext>Next</button>
+                            </div>
+                        </form>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>Detalle de Compra</ng-template>
+                        You are now done.
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button (click)="stepper.reset()">Reset</button>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!--<div class="card is-hidden1">
+  <div class="card-header">
+      <p class="card-header-title">Productos Comprados</p>
+  </div>
+  <div class="card-content">
+      <div class="content">Content</div>
+  </div>
+</div>
+<br />-->

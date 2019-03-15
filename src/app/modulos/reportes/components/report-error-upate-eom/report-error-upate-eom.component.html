@@ -1,0 +1,479 @@
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Informe Error Actualizacion EOM
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <!--
+            <form>
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Fecha </label>
+                    <div class="control">
+                      <my-date-picker disabled [options]="myDatePickerOptionsDesde" id="fechaCompraDesde" (dateChanged)="cambiaFechaDesde($event)"
+                        placeholder="" [selDate]="fechaCompraDesde|date: 'dd/MM/yyyy'||''"></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Tipo Documento</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="documentType" #documentType>
+                          <option value="0">Todos los Documento</option>
+                          <option *ngFor="let documentTypes of listDocumentTypes" [value]="documentTypes.codigo">
+                            {{documentTypes.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Canal</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="channel" #channel>
+                          <option value="0">Todos los Estados</option>
+                          <option *ngFor="let channels of listChannels" [value]="channels.idChannel">
+                            {{channels.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Tipo Flujo</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="typeOrder" #typeOrder>
+                          <option value="0">Todos los Flujos</option>
+                          <option *ngFor="let typeOrders of listTypeOrders" [value]="typeOrders.orderType">
+                            {{typeOrders.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <p class="control">
+                      <button [disabled]="reportInfo.loadings" class="button is-success" (click)="doSearch(documentType.value,
+                                                                          channel.value,
+                                                                          typeOrder.value
+                                                                          )">
+                        Buscar
+                      </button>
+
+                      <img *ngIf="reportInfo.loadings" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                      <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                        Limpiar
+                      </button>
+                      <button (click)="startLoadingSpinner()">Start Loading</button>
+
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+          -->
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th nowrap (click)="sortProperty('update')">Fecha</th>
+                  <th nowrap (click)="sortProperty('orderNumber')">Numero de OC</th>
+                  <th nowrap (click)="sortProperty('description')">Descripcion</th>
+                   <th nowrap (click)="sortProperty('detalle')">Detalle Error</th>
+
+                  <!--<th>Acci&oacute;n</th>-->
+                </tr>
+              </thead>
+              <tr *ngIf="results?.length === 0">
+                <td colspan="4">No se encontraron datos</td>
+              </tr>
+
+
+              <tbody>
+                <tr *ngFor="let report of results | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th nowrap>{{report.update}}</th>
+                  <td nowrap>{{report.orderNumber}}</td>
+                  <td nowrap>{{report.description}}</td>
+                   <td nowrap>{{report.detalle}}</td>
+
+                  <!--
+                  <td style="width: 150px; white-space: nowrap">
+                    <a class="button is-small is-success" [routerLink]="['/back-office/order/', report.tcPurchaseOrdersId]">Ver</a>
+                    <a class="button is-small is-success" (click)="doSearchCorreos(report.tcPurchaseOrdersId)">Correos</a>
+                  </td>
+                -->
+                </tr>
+
+              </tbody>
+
+            </table>
+            <pagination-controls style="display: block;" (pageChange)="pgCurrent = $event" previousLabel="Anterior"
+              nextLabel="Siguiente" maxSize="6">
+            </pagination-controls>
+            <a *ngIf='results.length > 0' class="button is-small is-success" (click)="doExport()">Exportar</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <modal #myModal>
+  <modal-header>
+    <h1>Detalle Orden</h1>
+  </modal-header>
+  <modal-content>
+    <accordion>
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Detalle de la OC</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+          <tr>
+            <th>Tipo de OC</th>
+            <td>{{detail.ordertype}}</td>
+          </tr>
+          <tr>
+            <th>Número de OC</th>
+            <td>{{detail.ordernumber}}</td>
+          </tr>
+          <tr>
+            <th>Rut</th>
+            <td>{{detail.rut}}</td>
+          </tr>
+          <tr>
+            <th>Nombre del comprador</th>
+            <td>{{detail.nameCustomer}}</td>
+          </tr>
+          <tr>
+            <th>Fecha de la compra</th>
+            <td>{{detail.creationtime}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{detail.email}}</td>
+          </tr>
+          <tr>
+            <th>Teléfono</th>
+            <td>{{detail.phoneNumber}}</td>
+          </tr>
+          <tr>
+            <th>País</th>
+            <td>{{detail.country}}</td>
+          </tr>
+          <tr>
+            <th>Tienda</th>
+            <td>{{detail.store}}</td>
+          </tr>
+          <tr>
+            <th>Canal de venta</th>
+            <td>{{detail.salesChannel}}</td>
+          </tr>
+          <tr>
+            <th>Tipo de documento tributario</th>
+            <td>{{detail.dteType}}</td>
+          </tr>
+          <tr>
+            <th>Número de documento tributario</th>
+            <td>{{detail.dteNumber}}</td>
+          </tr>
+          <tr>
+            <th>Puntos Cencosud</th>
+            <td>{{detail.cencoPoints}}</td>
+          </tr>
+
+          <tr *ngIf="detail.ppeType === 'Novios' && detail.codPPE != null">
+            <th>Tipo Compra {{detail.ppeType}}</th>
+            <td>{{detail.isShippingNovios}}</td>
+          </tr>
+
+          <tr *ngIf="detail.ppeType === 'Novios' && detail.codPPE != null">
+            <th>Código de {{detail.ppeType}}</th>
+            <td>{{detail.codPPE}}</td>
+          </tr>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Producto(s)</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <thead title="Productos">
+            <tr>
+              <th>SKU</th>
+              <th>Tipo de Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Descuento por unidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let detailProduct of resultsDetail.productDetailList">
+            <tr>
+              <td>{{detailProduct.sku}}</td>
+              <td>{{detailProduct.tipoProducto}}</td>
+              <td>{{detailProduct.cantidad}}</td>
+              <td>{{detailProduct.unitPrice}}</td>
+              <td>{{detailProduct.unitDiscount}}</td>
+              <td>{{detailProduct.finalPrice}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Medio de pago</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Medio de pago</th>
+              <th>Cupón descuento</th>
+              <th>Número de cuotas</th>
+              <th>Número de tarjeta</th>
+              
+              <th>Total Pagado</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let detailMedioPago of resultsDetail.mpagoDetailList">
+            <tr>
+              <td>{{detailMedioPago.payment}}</td>
+              <td>{{detailMedioPago.discount}}</td>
+              <td>{{detailMedioPago.payFees}}</td>
+              <td>{{detailMedioPago.cardNumber}}</td>
+              
+              <td>{{detailMedioPago.totalPay}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Transacción de venta</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Fecha compra</th>
+              <th>N° Tienda</th>
+              <th>N° Terminal</th>
+              <th>Número de folio</th>
+              <th>Número de transacción</th>
+              <th>FECHA REGISTRO EN SDV</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let detailTrx of resultsDetail.trxDetailList">
+            <tr>
+              <td>{{detailTrx.purchaseDate}}</td>
+              <td>{{detailTrx.numStore}}</td>
+              <td>{{detailTrx.numTerminal}}</td>
+              <td>{{detailTrx.folioNumber}}</td>
+              <td>{{detailTrx.trxNumber}}</td>
+              <td>{{detailTrx.sdvDate}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Orden de despacho</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>N&uacute;mero</th>
+              <th>Estado</th>
+              <th>Nombre destinatario</th>
+              <th>Dirección de despacho</th>
+              <th>Fecha de entrega</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let detailShipping of resultsDetail.shippingDetailList">
+            <tr>
+              <td>{{detailShipping.typeOD}}</td>
+              <td>{{detailShipping.numOD}}</td>
+              <td>{{detailShipping.statusOD}}</td>
+              <td>{{detailShipping.name}}</td>
+              <td>{{detailShipping.address}}</td>
+              <td>{{detailShipping.shippingDate}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+      <div *ngFor="let detailPPE2 of resultsDetail.ppeDetailList">
+        <div *ngIf="detailPPE2.ppeeType === 'Novios'">
+          <accordion-group *ngIf="resultsDetail.ppeDetailList != null">
+            <accordion-heading>
+              <h4 class="panel-title">Regalo de Novios</h4>
+              <span class="accordion-icon"></span>
+            </accordion-heading>
+            <table class="table">
+              <tbody *ngFor="let detailPPE of resultsDetail.ppeDetailList">
+                <tr>
+                  <th>Código de Novios</th>
+                  <td>{{detailPPE.id}}</td>
+                </tr>
+                <tr>
+                  <th>Nombre de Novios</th>
+                  <td>{{detailPPE.name1}} - {{detailPPE.name2}}</td>
+                </tr>
+                <tr>
+                  <th>Mensaje de Saludo</th>
+                  <td>{{detailPPE.messageText}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </accordion-group>
+        </div>
+      </div>
+    
+    </accordion>
+  </modal-content>
+  <modal-footer>
+    <button class="button is-success" (click)="myModal.close()" [routerLink]="['/back-office/order']">Ver Detalle</button>
+    <button class="button is-success" (click)="myModal.close()">Cerrar</button>
+  </modal-footer>
+</modal> -->
+
+<!-- <modal #myModalEmailInfo>
+  <modal-header>
+    <h1></h1>
+  </modal-header>
+  <modal-content>
+
+    <div *ngIf="resultsDetail.saleDetail != null">
+      <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+        <tr>
+          <th>Orden de compra</th>
+          <th>{{detail.ordernumber}}</th>
+        </tr>
+        <tr>
+          <th>Email actual</th>
+          <th>{{detail.email}}</th>
+        </tr>
+      </table>
+    </div>
+
+    <accordion>
+      <accordion-group *ngIf="resultsDetail.saleDetail != null">
+        <accordion-heading>
+          <h4 class="panel-title">Editar email</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+          <tr>
+            <th>RUT</th>
+            <td appRutValidation>{{detail.rut}}</td>
+          </tr>
+          <tr>
+            <th>Nombre del comprador</th>
+            <td>{{detail.nameCustomer}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>
+              <input [disabled]="!editable" type="email" value="{{detail.email}}" #emailUser />
+            </td>
+            <td><input type="hidden" #ordenoc value="{{detail.ordernumber}}"></td>
+          </tr>
+          <tr *ngIf="editable">
+            <td></td>
+            <td>
+              <button class="button is-small is-success" [disabled]="emailInfo.loadingModificarEmail" (click)="updateEmailUser(detail.email, ordenoc.value, emailUser.value)">Modificar</button>
+              <img *ngIf="emailInfo.loadingModificarEmail" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </td>
+          </tr>
+        </table>
+      </accordion-group>
+      <accordion-group *ngIf="emailInfo.resultsEmailByOC != null">
+        <accordion-heading>
+          <h4 class="panel-title">Estado envío email</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table" *ngFor="let detailEmail of emailInfo.resultsEmailByOC">
+          <tr>
+            <th>Nombre</th>
+            <td>{{ detailEmail.emailName }}</td>
+          </tr>
+          <tr>
+            <th>Fecha envío</th>
+            <td>{{ detailEmail.statusTime }}</td>
+          </tr>
+          <tr>
+            <th>Estado</th>
+            <td>
+              <span [ngSwitch]="detailEmail.failedType">
+                <span *ngSwitchCase="0">Rebote Temporal</span>
+                <span *ngSwitchCase="1">Rebote Permanente</span>
+                <span *ngSwitchCase="2">Rebote Por Spam</span>
+                <span *ngSwitchDefault>Envio Exitoso</span>
+              </span>
+              /
+
+              <span [ngSwitch]="detailEmail.status">
+                <span *ngSwitchCase="0">Con Error</span>
+                <span *ngSwitchCase="1">Solucionado</span>
+                <span *ngSwitchDefault>Sin Errores</span>
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="editable">
+            <th>Acci&oacute;n</th>
+            <td>
+              <button class="button is-small is-success" (click)="reenviarEmail(endpoint.value, endpointOrderNumber.value, endpointEmailType.value, endpointOrderType.value, endpointIdFailedEmail.value)"
+                [disabled]="emailInfo.loadingForwardEmail">Reenviar</button>
+              <img *ngIf="emailInfo.loadingForwardEmail" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </td>
+          </tr>
+          <td><input type="hidden" #endpoint value="{{detailEmail.endpoint}}"></td>
+          <td><input type="hidden" #endpointOrderNumber value="{{detailEmail.orderNumber}}"></td>
+          <td><input type="hidden" #endpointEmailType value="{{detailEmail.emailType}}"></td>
+          <td><input type="hidden" #endpointOrderType value="{{detailEmail.orderType}}"></td>
+          <td><input type="hidden" #endpointIdFailedEmail value="{{detailEmail.idFailedEmail}}"></td>
+        </table>
+      </accordion-group>
+
+    </accordion>
+  </modal-content>
+  <modal-footer>
+    <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+  </modal-footer>
+</modal>
+
+ -->

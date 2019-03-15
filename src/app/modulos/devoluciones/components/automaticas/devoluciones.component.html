@@ -1,0 +1,313 @@
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            MODULO INCONSISTENCIA EN DEVOLUCION AUTOMATICA
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <form action="">
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Filtro por estados</label>
+                    <div class="control">
+                      <div class="select">
+                        <select>
+                          <option>Estado 1</option>
+                          <option>Estado 2</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Filtro por fecha</label>
+                    <div class="control">
+                       <input class="input" type="text" placeholder="SKU">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+
+
+
+
+            <div class="columns">
+              <div class="column is-12">
+                <nwb-tabs [size]="'small'" [toggle]="true">
+                  <nwb-tab label="TBK">
+                    <table class="table table-inconcistencias">
+                      <thead>
+                        <tr>
+                          <th>Fecha NC</th>
+                          <th>Fecha Actualización</th>
+                          <th>Total $</th>
+                          <th>Total #</th>
+                          <th>Motivo</th>
+                          <th>Estado</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr>
+                          <td>26/04/2018</td>
+                          <td>26/04/2018</td>
+                          <td>$ 100.000</td>
+                          <td># 6</td>
+                          <td>TIME OUT</td>
+                          <td>PENDIENTE</td>
+                          <td>
+                            <a class="button is-small is-success">Empuje</a>
+                            <a class="button is-small is-success">Carga</a>
+                            <a class="button is-small is-success">Descarga</a>
+                          </td>
+                        </tr>
+                        <tr>
+                            <td>20/04/2018</td>
+                            <td>22/04/2019</td>
+                            <td>$ 150.470</td>
+                            <td># 2</td>
+                            <td>TIME OUT</td>
+                            <td>PENDIENTE</td>
+                            <td>
+                              <a class="button is-small is-success">Empuje</a>
+                              <a class="button is-small is-success">Carga</a>
+                              <a class="button is-small is-success">Descarga</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>25/04/2018</td>
+                            <td>26/04/2018</td>
+                            <td>$ 957.893</td>
+                            <td># 63</td>
+                            <td>RESPUESTA OK</td>
+                            <td>DEVOLUCION OK</td>
+                            <td>
+                              <a class="button is-small is-success">Empuje</a>
+                              <a class="button is-small is-success">Carga</a>
+                              <a class="button is-small is-success">Descarga</a>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </nwb-tab>
+                  <nwb-tab label="GIFTCARD">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                            <th>Fecha NC</th>
+                            <th>Fecha Actualización</th>
+                            <th>Total $</th>
+                            <th>Total #</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                          <tr>
+                              <td>20/04/2018</td>
+                              <td>22/04/2019</td>
+                              <td>$ 150.470</td>
+                              <td># 2</td>
+                              <td>TIME OUT</td>
+                              <td>PENDIENTE</td>
+                              <td>
+                                <a class="button is-small is-success">Empuje</a>
+                                <a class="button is-small is-success">Carga</a>
+                                <a class="button is-small is-success">Descarga</a>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>25/04/2018</td>
+                              <td>26/04/2018</td>
+                              <td>$ 957.893</td>
+                              <td># 63</td>
+                              <td>RESPUESTA OK</td>
+                              <td>DEVOLUCION OK</td>
+                              <td>
+                                <a class="button is-small is-success">Empuje</a>
+                                <a class="button is-small is-success">Carga</a>
+                                <a class="button is-small is-success">Descarga</a>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>26/04/2018</td>
+                              <td>26/04/2018</td>
+                              <td>$ 100.000</td>
+                              <td># 6</td>
+                              <td>TIME OUT</td>
+                              <td>PENDIENTE</td>
+                              <td>
+                                <a class="button is-small is-success">Empuje</a>
+                                <a class="button is-small is-success">Carga</a>
+                                <a class="button is-small is-success">Descarga</a>
+                              </td>
+                            </tr>
+                      </tbody>
+                    </table>
+                  </nwb-tab>
+                  <nwb-tab label="TCC">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                            <th>Fecha NC</th>
+                            <th>Fecha Actualización</th>
+                            <th>Total $</th>
+                            <th>Total #</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                          <tr>
+                              <td>25/04/2018</td>
+                              <td>26/04/2018</td>
+                              <td>$ 957.893</td>
+                              <td># 63</td>
+                              <td>RESPUESTA OK</td>
+                              <td>DEVOLUCION OK</td>
+                              <td>
+                                <a class="button is-small is-success">Empuje</a>
+                                <a class="button is-small is-success">Carga</a>
+                                <a class="button is-small is-success">Descarga</a>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>26/04/2018</td>
+                              <td>26/04/2018</td>
+                              <td>$ 100.000</td>
+                              <td># 6</td>
+                              <td>TIME OUT</td>
+                              <td>PENDIENTE</td>
+                              <td>
+                                <a class="button is-small is-success">Empuje</a>
+                                <a class="button is-small is-success">Carga</a>
+                                <a class="button is-small is-success">Descarga</a>
+                              </td>
+                            </tr>
+                            <tr>
+                                <td>20/04/2018</td>
+                                <td>22/04/2019</td>
+                                <td>$ 150.470</td>
+                                <td># 2</td>
+                                <td>TIME OUT</td>
+                                <td>PENDIENTE</td>
+                                <td>
+                                  <a class="button is-small is-success">Empuje</a>
+                                  <a class="button is-small is-success">Carga</a>
+                                  <a class="button is-small is-success">Descarga</a>
+                                </td>
+                            </tr>
+                      </tbody>
+                    </table>
+                  </nwb-tab>
+
+                </nwb-tabs>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<modal #myModal>
+  <modal-header>
+    <h1>Modal header</h1>
+  </modal-header>
+  <modal-content>
+    <accordion>
+      <accordion-group [isOpened]="true">
+        <accordion-heading>
+          <h4 class="panel-title">Datos del Cliente</h4>
+          <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Rut Cliente</td>
+              <td>15678976-3</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Jose Perez</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>mail@mail.com</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Datos Despacho</h4>
+          <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Rut Cliente</td>
+              <td>15678976-3</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Jose Perez</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>mail@mail.com</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Datos Compra</h4>
+          <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Rut Cliente</td>
+              <td>15678976-3</td>
+            </tr>
+            <tr>
+              <td>Nombre</td>
+              <td>Jose Perez</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>mail@mail.com</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+
+    </accordion>
+  </modal-content>
+  <modal-footer>
+    <button class="button is-success" (click)="myModal.close()">close</button>
+  </modal-footer>
+</modal>

@@ -1,0 +1,80 @@
+<ng4-loading-spinner
+  [threshold]="0"
+  [loadingText]="'Please wait...'"
+  [zIndex]="999"
+></ng4-loading-spinner>
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Emisión unitaria de guías de despacho
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <form>
+              <div class="form-columns">
+                <div class="field">
+                  <div class="form-column">
+                    <label class="label is-small">Seleccione Rut u OC</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input style="margin-top: 17%;"
+                              type="radio"
+                              name="OCRUT"
+                              value="oc"
+                              (change)="radioButtonChange($event)"
+                              checked
+                            />
+                            N° OC
+                          </label>
+                          <label class="radio">
+                            <input style="margin-top: 17%;"
+                              type="radio"
+                              name="OCRUT"
+                              value="rut"
+                              (change)="radioButtonChange($event)"
+                            />
+                            RUT
+                          </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="form-column">
+                    <label class="label is-small">Ingrese Rut u OC</label>
+                    <div class="control">
+                        <input
+                        class="input"
+                        type="text"
+                        placeholder="{{ textInput }}"
+                        [(ngModel)]="inputOCRut"
+                        name="InputOCRut"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="form-column">
+                    <div class="control">
+                        <Button style="margin-top: 27%;" class="button is-success" (click)='buscarGuiasUnitarias()'>
+                            Buscar
+                            </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

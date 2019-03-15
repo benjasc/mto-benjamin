@@ -1,0 +1,287 @@
+<div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Pefiles - B&uacute;squeda
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </a>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <form action="">
+                <div class="form-columns">
+
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Area</label>
+                      <div class="control">
+                        <div class="select">
+                            <select name="area" #areaSearch>
+                              <option value="-1">Todos las Areas</option>
+                              <option *ngFor="let listProfile of listProfiles" [value]="listProfile.area">
+                                {{listProfile.area | uppercase}}
+                              </option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Perfiles</label>
+                       <div class="control">
+                          <input class="input" type="text" placeholder="Nombre" maxlength="50" #perfilSearch>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <p class="control">
+                        <button [disabled]="loadings" class="button is-success" (click)="searchInfo('-1', areaSearch.value, perfilSearch.value)">
+                          Buscar
+                        </button>
+                        <!--
+                        <img *ngIf="loadings" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                      />
+                        -->
+                       <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                          Limpiar
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('idProfile')">Id</th>
+                  <th (click)="sortProperty('area')">Area</th>
+                   <th (click)="sortProperty('perfil')">Perfil</th>
+                  <th (click)="sortProperty('creationdate')">Fecha Creacion</th>
+
+                  <th>Acci&oacute;n</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let profile of results | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{profile.idProfile}}</th>
+                  <td>{{profile.area}}</td>
+                  <td>{{profile.perfil}}</td>
+                  <td>{{profile.creationdate}}</td>
+                  <td style="width: 150px; white-space: nowrap">
+                     <button [disabled]="!editable" class="button is-small is-success" (click)="searchInfoUpdate(profile.idProfile, profile.area, profile.perfil)" >Editar</button>
+                   </td>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td style="width: 150px; white-space: nowrap">
+                    <button [disabled]="!editable" class="button is-small is-success" (click)="searchInfoInsert()" >Crear</button>
+                  </td>
+                </tr>
+              </tbody>
+             </table>
+            <pagination-controls (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+            <!--<a *ngIf='emailInfo.results.length > 0' class="button is-small is-success" (click)="doExport()">Exportar</a>-->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <modal #myModalInsert>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Crear Perfil</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+
+          <table class="table">
+
+              <tr>
+                <th>Area</th>
+                <td>
+                  <div class="select">
+                  <select  name="areaInsert" [(ngModel)]="myModalInsertInputArea" #areaInsert >
+                    <option value="">Todas las Areas</option>
+                    <option *ngFor="let listProfile of listProfiles" [value]="listProfile.area">
+                    {{listProfile.area | uppercase}}
+                    </option>
+                  </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Perfil</th>
+                <td>
+                  <input  id="perilInsert" name="perfilInsert" class="input" minLength="3" maxLength="50" type="text" value="{{myModalInsertInputPerfil}}" [(ngModel)]="myModalInsertInputPerfil"  #perfilInsert/>
+                </td>
+              </tr>
+
+        </table>
+        </accordion-group>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Crear Modulo de Perfil</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngIf="resultsDetailModulePerfilInsert?.length > 0">
+            <thead title="Productos">
+                <tr>
+                  <th>Modulo</th>
+                  <th>Sub Modulo</th>
+                  <th>Acci&oacute;n</th>
+
+                </tr>
+            </thead>
+            <tbody *ngFor="let detailModulePerfilInsert of resultsDetailModulePerfilInsert; let i = index;">
+              <tr>
+                <td>{{detailModulePerfilInsert.modulo}}</td>
+                <td>{{detailModulePerfilInsert.name}}</td>
+                <td>
+                  <div class="select" >
+                      <select  (change)="select(detailModulePerfilInsert.idModule , $event.target.value)"  >
+                        <option value="{{detailModulePerfilInsert.idAcces}}">{{detailModulePerfilInsert.accessName | uppercase}} </option>
+                          <option *ngFor="let listAcces of listAccess" [value]="listAcces.idAccess">
+                    {{listAcces.name | uppercase}}
+                    </option>
+                      </select>
+                      </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+    <modal-footer>
+        <button class="button is-success" (click)="insert(myModalInsertInputArea, myModalInsertInputPerfil)">Crear</button>
+        <!--
+        <img *ngIf="loadingInsert" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        -->
+        <button class="button is-success" (click)="myModalInsert.close()">Cerrar</button>
+    </modal-footer>
+  </modal>
+
+  <modal #myModalUpdate>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Editar Perfil</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngFor="let detailPerfil of resultsDetailPerfil">
+              <tr>
+                <th>Id</th>
+                <td>{{detailPerfil.idProfile}}</td>
+                 <td><input   class="input" type="hidden" [(ngModel)]="myModalUpdateInputIdProfile"  value="{{detailPerfil.idProfile}}" #idProfileUpdate></td>
+              </tr>
+              <tr>
+                <th>Area</th>
+                <td>
+                  <div class="select">
+                  <select name="areaUpdate" [(ngModel)]="myModalUpdateInputArea" #areaUpdate>
+                    <option value="{{areaUpdateSelect}}">{{areaUpdateSelect | uppercase}} </option>
+                    <option *ngFor="let listProfile of listProfiles" [value]="listProfile.area">
+                    {{listProfile.area | uppercase}}
+                    </option>
+                  </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Perfil</th>
+                <td>
+                  <input  class="input" minLength="3" maxLength="50" type="email" [(ngModel)]="myModalUpdateInputPerfil" value="{{detailPerfil.perfil}}" name="perfilUpdate" #perfilUpdate/>
+                </td>
+              </tr>
+        </table>
+        </accordion-group>
+
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Editar Modulo de Perfil</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngIf="resultsDetailModulePerfil?.length > 0">
+            <thead title="Productos">
+                <tr>
+                  <th>Modulo</th>
+                  <th>Sub Modulo</th>
+                  <th>Acci&oacute;n</th>
+
+                </tr>
+            </thead>
+            <tbody *ngFor="let detailModulePerfil of resultsDetailModulePerfil; let i = index;">
+              <tr>
+                <td>{{detailModulePerfil.modulo}}</td>
+                <td>{{detailModulePerfil.name}}</td>
+                <td>
+                  <div class="select">
+                      <select  id="selectMarcas" (change)="select(detailModulePerfil.idModule , $event.target.value)">
+                        <option value="{{detailModulePerfil.idAcces}}">{{detailModulePerfil.accessName | uppercase}} </option>
+                        <option *ngFor="let listAcces of listAccess" [value]="listAcces.idAccess">
+                    {{listAcces.name | uppercase}}
+                    </option>
+                      </select>
+                      </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+
+    <modal-footer>
+        <button class="button is-success" (click)="update(myModalUpdateInputIdProfile, myModalUpdateInputArea, myModalUpdateInputPerfil)">Editar</button>
+        <!--
+          <img *ngIf="loadingUpdate" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        -->
+        <button class="button is-success" (click)="myModalUpdate.close()">Cerrar</button>
+    </modal-footer>
+  </modal>
+
+  <modal #myModalDelete>
+    <modal-header>
+      <h1>Confirme</h1>
+    </modal-header>
+    <modal-content>
+      <input  class="input" type="hidden" value="{{idProfileDeleteMyModal}}" #idUserDelete >
+    <div class="column is-6 is-offset-3">
+      <div>
+        <div>
+          <p><strong>¿ Realmente desea eliminar el Perfil ?</strong></p>
+        </div>
+      </div>
+    </div>
+    </modal-content>
+
+    <modal-footer>
+        <button class="button is-success" [disabled]="loadingDelete" (click)="delete(idUserDelete.value)">Eliminar</button>
+        <img *ngIf="loadingDelete" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+
+        <button class="button is-success" (click)="myModalDelete.close()">Cerrar</button>
+    </modal-footer>
+
+  </modal>
+

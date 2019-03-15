@@ -1,0 +1,8 @@
+<div class="app-block-info ">
+    <p class="app-block-info__title">{{title}}</p>
+    <h3 class="app-block-info__number">{{number}}</h3>
+    <h5 *ngIf="title != 'Promedio OC/Hora'" class="app-block-info__failed">{{failed}} fallidas</h5>
+	<!--
+    <p class="app-block-info__from-last"  [ngClass]="iconPercentage">
+      <span>{{percent}}%</span> desde la ultima Semana</p>-->
+</div>

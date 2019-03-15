@@ -1,0 +1,33 @@
+
+<div class="app-menu__wrapper" [class.wrapper-full]="menuOpen" (click)="onContainerClicked($event)">
+    <div class="app-menu"  [class.app-menu__open]="menuOpen">
+      <div class="user-info">
+        <!-- <div class="avatar user-info__avatar"> -->
+          <!-- <div class="header__logo {{logo}}"></div> -->
+        <!-- </div> -->
+        <div class="user-info__text">
+          <p>Bienvenido,</p>
+          <h3>{{usuario.name}} {{usuario.lastame}}</h3>
+          <p>{{usuario.profileName}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="menu-small" [class.menu-small__open]="menuOpen">
+        <div class="header__logo {{logo}}"></div>    
+      <!-- <div class="header__logo aligare"></div> -->
+      <div class="menu-icon" [class.open]="menuOpen" (click)="openMenu()">
+        <span></span>
+      </div>
+      <ul class="menu-list">
+        <li *ngFor="let item of filterItemsOfType(true); index as i" (click)="showChilds(i)">
+          <i class="icono {{item.icon}}"></i>
+          <span>{{item.name}}</span>
+          <ul>
+            <li *ngFor="let subItem of item.subItems" [hidden]="!item.active">
+              <a href="javascript:;" class="hideMenu" title=">{{subItem.name}}" [routerLink]="[subItem.link]">{{subItem.name}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>

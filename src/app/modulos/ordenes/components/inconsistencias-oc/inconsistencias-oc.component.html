@@ -1,0 +1,791 @@
+<ng4-loading-spinner [threshold]="0"  [loadingText]="'Please wait...'" [zIndex]="999" ></ng4-loading-spinner>
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Busqueda - Errores
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <form >
+
+
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Filtro por estados</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="stateAction" #stateAction>
+                          <option value="0">TODOS LOS ESTADOS</option>
+                          <option *ngFor="let state of states" [value]="state.idError">
+                            {{state.description | uppercase}}
+                          </option>
+                        </select>
+                        <!--
+                        <div *ngIf="f.submitted && !stateAction.valid" class="help-block">Estado es requerido</div>
+                        -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Fecha de Inicio </label>
+                    <div class="control">
+                      <my-date-picker disabled [options]="myDatePickerOptionsDesde" id="fechaCompraDesde" (dateChanged)="cambiaFechaDesde($event)" placeholder=""
+                        [selDate]="fechaCompraDesde|date: 'dd/MM/yyyy'||''"  required></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-column" >
+                  <div class="field">
+                    <label class="label is-small">Fecha de T&eacute;rmino</label>
+                    <div class="control">
+
+                      <my-date-picker disabled [options]="myDatePickerOptionsHasta" id="fechaCompraHasta" (dateChanged)="cambiaFechaHasta($event)" placeholder=""
+                        [selDate]="fechaCompraHasta|date: 'dd/MM/yyyy'||''" required></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Flujos</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="typeOrder"  #typeOrder >
+                          <option value="0">TODOS LOS FLUJOS</option>
+                          <option *ngFor="let typeOrders of listTypeOrders" [value]="typeOrders.orderType">
+                            {{typeOrders.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Orden de Compra</label>
+                    <div class="control">
+                      <input class="input" type="text" placeholder="12345678901234567890"  name="ordenCompraSearch" [(ngModel)]="model.ordenCompraSearch" #ordenCompraSearch="ngModel" >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <p class="control">
+
+                      <button [disabled]="loadings" class="button is-success" (click)="doSearch(stateAction.value,
+                                                                          typeOrder.value,
+                                                                          ordenCompraSearch.value
+                                                                          )">   Buscar</button>
+
+
+
+                       <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                          Limpiar
+                      </button>
+
+
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div>
+              <div class="columns">
+                <div class="column is-12">
+                  <nwb-tabs [size]="'small'" [toggle]="true">
+                    <nwb-tab label="SFCC ({{files?.length}})" >
+                      <table class="table table-inconcistencias">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('fileName')">Archivo  </th>
+                            <th (click)="sortProperty('errorType')">Estado</th>
+                            <th (click)="sortProperty('errorType')">Detalle</th>
+                            <th (click)="sortProperty('lines')">Total # Lineas</th>
+                            <th (click)="sortPropertyDate('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <!--<th>Acciones</th>-->
+                          </tr>
+                        </thead>
+                        <tr *ngIf="files?.length === 0 || !files ">
+                          <td colspan="5">No se encontraron datos</td>
+                        </tr>
+                        <tbody *ngIf="files" >
+                          <tr *ngFor="let file of files | orderby: orderProperty  | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentSfcc, id: 'pgCurrentSfcc' }">
+                            <!--nowrap="nowrap"-->
+                            <th align="left">{{ file.fileName }}</th>
+                            <td align="left">{{ file.errorType }}</td>
+                            <td align="left">
+                              <div *ngIf="file.errorType === 'completo'">Archivo generado con errores </div>
+                              <div *ngIf="file.errorType === 'parcial'">Ordenes encontradas: &nbsp;
+                                <span *ngFor="let order of file.orders"> {{order.orderNumber}} - </span>
+                              </div>
+                            </td>
+                            <td align="left">{{ file.lines | number:0 }}</td>
+                            <td align="left">{{ file.update }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="files?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentSfcc = $event" id="pgCurrentSfcc" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="Ingreso OC ({{listLegacyIOC?.length}})">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                              <th (click)="sortProperty('description')">Estado</th>
+                              <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                              <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                              <!--
+                              <th>Acciones</th>
+
+                              <th *ngIf="editable">
+                                <p *ngIf="listLegacyIOC?.length > 0 ">
+                                  <input  class="form-check-input" type="checkbox" (change)="selectAllIngreso(listLegacyIOC)" [checked]="selectedAllIngreso">
+                                </p>
+                              </th>
+                            -->
+                            </tr>
+                          </thead>
+                          <tr *ngIf="listLegacyIOC?.length === 0 || !listLegacyIOC">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                          <tbody  *ngIf="listLegacyIOC">
+                            <tr *ngFor="let ioc of listLegacyIOC | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentIoc, id: 'pgCurrentIoc' }">
+                              <td align="left">{{ ioc.order.orderNumber }}</td>
+                              <td align="left">{{ ioc.order.description }}</td>
+                              <!-- <td align="left">{{ ioc.order.orderStatusEom }} - {{ioc.order.itemStatusEom}}</td> -->
+                              <td align="left">{{ ioc.order.descripcionStatus }}</td>
+                              <td align="left">{{ ioc.order.update }}</td>
+                              <!--
+                              <td style="width: 150px; white-space: nowrap">
+                              <div *ngIf="editable; else desactivado">
+                                <button [disabled]="loading" class="button is-small is-success" [routerLink]="['/back-office/order/', ioc.order.orderNumber]">ver</button>
+                                <button [disabled]="loading" class="button is-small is-success" (click)="callReinjectOrderService(ioc.order.orderNumber, ioc.order.origin, ioc.order.errorId)">Empujar</button>
+                              </div>
+                              <ng-template #desactivado>
+                                <button [disabled]="loading" class="button is-small is-success" [routerLink]="['/back-office/order/', ioc.order.orderNumber]">ver</button>
+                                <button [disabled]="true" class="button is-small is-success" (click)="callReinjectOrderService(ioc.order.orderNumber, ioc.order.origin, ioc.order.errorId)">Empujar</button>
+                              </ng-template>
+                            </td>
+                            <td *ngIf="editable">
+                                <input  class="form-check-input" type="checkbox" value="{{ioc.order.orderNumber}}" [(ngModel)]="ioc.selectedIngreso" (change)="checkIfAllSelectedIngreso(listLegacyIOC)">
+                            </td>
+                          -->
+                            </tr>
+                          </tbody>
+                          <!--
+                          <tbody *ngIf="listLegacyIOC?.length > 0 && editable">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="loadings" class="button is-small is-success" (click)="pushServiceMassiveOrdersIngreso()">Empujar Masivo</button>
+                              </td>
+                              <td>
+
+                              </td>
+                            </tr>
+                          </tbody>
+                        -->
+                        </table>
+                        <div *ngIf="listLegacyIOC?.length > 0">
+                          <pagination-controls (pageChange)="pgCurrentIoc = $event" id="pgCurrentIoc" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                        </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="SDV ({{listLegacySDV?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortPropertyDate('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacySDV?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAll(listLegacySDV)" [checked]="selectedAll">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacySDV?.length === 0 || !listLegacySDV">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                          <tr *ngIf="listLegacySDV?.length === 0 || !listLegacySDV">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody  *ngIf="listLegacySDV">
+                          <tr *ngFor="let sdv of listLegacySDV | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentSdv, id: 'pgCurrentSdv' }">
+                            <td align="left">{{ sdv.order.orderNumber }}</td>
+                            <td align="left">{{ sdv.order.description }}</td>
+                            <td align="left">{{ sdv.order.descripcionStatus }}</td>
+                            <!-- <td align="left">{{ sdv.order.orderStatusEom }} - {{sdv.order.itemStatusEom}}</td> -->
+                            <td align="left">{{ sdv.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap">
+                              <div *ngIf="editable; else desactivado">
+                                <button [disabled]="loading" class="button is-small is-success" [routerLink]="['/back-office/order/', sdv.order.orderNumber]">ver</button>
+                                <button [disabled]="loading" class="button is-small is-success" (click)="callReinjectOrderService(sdv.order.orderNumber, sdv.order.origin, sdv.order.errorId)">Empujar</button>
+                              </div>
+                              <ng-template #desactivado>
+                                <button [disabled]="loading" class="button is-small is-success" [routerLink]="['/back-office/order/', sdv.order.orderNumber]">ver</button>
+                                <button [disabled]="true" class="button is-small is-success" (click)="callReinjectOrderService(sdv.order.orderNumber, sdv.order.origin, sdv.order.errorId)">Empujar</button>
+                              </ng-template>
+                            </td>
+                            <td *ngIf="editable">
+                                <input  class="form-check-input" type="checkbox" value="{{sdv.order.orderNumber}}" [(ngModel)]="sdv.selected" (change)="checkIfAllSelected(listLegacySDV)">
+                            </td>
+                          </tr>
+                        </tbody>
+                          <tbody *ngIf="listLegacySDV?.length > 0 && editable">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="loadingCheck" class="button is-small is-success" (click)="pushServiceMassiveOrdersSdv()">Empujar Masivo</button>
+                                <img *ngIf="loadingCheck" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                              </td>
+                              <td>
+
+                              </td>
+                            </tr>
+                          </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacySDV?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentSdv = $event" id="pgCurrentSdv" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="Creacion EOM ({{listLegacyEOMCreate?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortProperty('descripcionStatus')">Motivo</th>
+                            <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacyEOMCreate?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAllEomCreate(listLegacyEOMCreate)" [checked]="selectedAllEomCreate">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacyEOMCreate?.length === 0 || !listLegacyEOMCreate">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                           <tr *ngIf="listLegacyEOMCreate?.length === 0 || !listLegacyEOMCreate">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody *ngIf="listLegacyEOMCreate">
+                          <tr *ngFor="let eomCreate of listLegacyEOMCreate | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentEomCreate, id: 'pgCurrentEomCreate' }">
+                            <td align="left">{{ eomCreate.order.orderNumber }}</td>
+                            <td align="left">{{ eomCreate.order.description }}</td>
+                            <td align="left">{{ eomCreate.order.orderStatusEom }} - {{eomCreate.order.itemStatusEom}}</td>
+                            <td align="left">{{ eomCreate.order.descripcionStatus }}</td>
+                            <td align="left">{{ eomCreate.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap">
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', eomCreate.order.orderNumber]" >Ver</button>
+                                <button [disabled]="!editable" class="button is-small is-success" (click)="callReinjectOrderService(eomCreate.order.orderNumber, eomCreate.order.origin, eomCreate.order.errorId)">Empujar</button>
+                                <button  [disabled]="!editableSku"  class="button is-small is-success"(click)="callUpdateItems(eomCreate.order.orderNumber)">SKU Servicio</button>
+                            </td>
+                            <td *ngIf="editable">
+                              <input  class="form-check-input" type="checkbox" value="{{eomCreate.order.orderNumber}}" [(ngModel)]="eomCreate.selectedEomCreate" (change)="checkIfAllSelectedEomCreate(listLegacyEOMCreate)">
+                            </td>
+                          </tr>
+                        </tbody>
+                          <tbody *ngIf="listLegacyEOMCreate?.length > 0">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="!editable" class="button is-small is-success" (click)="pushServiceMassiveOrdersEomCreate()">Empujar Masivo</button>
+                                <img *ngIf="loadingCheckEomCreate" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                &nbsp;
+                                <button [disabled]="!editableSku" class="button is-small is-success" (click)="pushMassiveSkuServiceEomCreate()">SKU Servicio Masivo</button>
+                                 <img *ngIf="loadingCheckEomCreateSKu" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                              </td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacyEOMCreate?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentEomCreate = $event" id="pgCurrentEomCreate" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="Actualizacion EOM ({{listLegacyEOMAct?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortProperty('descripcionStatus')">Motivo</th>
+                            <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacyEOMAct?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAllEomAct(listLegacyEOMAct)" [checked]="selectedAllEomAct">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacyEOMAct?.length === 0 || !listLegacyEOMAct">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                           <tr *ngIf="listLegacyEOMAct?.length === 0 || !listLegacyEOMAct">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody *ngIf="listLegacyEOMAct">
+                          <tr *ngFor="let eomAct of listLegacyEOMAct | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentEomAct, id: 'pgCurrentEomAct' }">
+                            <td align="left">{{ eomAct.order.orderNumber }}</td>
+                            <td align="left">{{ eomAct.order.description }}</td>
+                            <td align="left">{{ eomAct.order.orderStatusEom }} - {{eomAct.order.itemStatusEom}}</td>
+                            <td align="left">{{ eomAct.order.descripcionStatus }}</td>
+                            <td align="left">{{ eomAct.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap">
+                              <div *ngIf="editable; else desactivado">
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', eomAct.order.orderNumber]" >Ver</button>
+                                <button *ngIf="!loading" class="button is-small is-success" (click)="callReinjectOrderService(eomAct.order.orderNumber, eomAct.order.origin, eomAct.order.errorId)">Empujar</button>
+                                <!--
+                                  <a *ngIf="!loading" class="button is-small is-success"(click)="callUpdateItems(eomAct.order.orderNumber)">SKU Servicio</a>
+                                -->
+                              </div>
+                              <ng-template #desactivado>
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', eomAct.order.orderNumber]" >Ver</button>
+                                <button [disabled]="true" class="button is-small is-success" (click)="callReinjectOrderService(eomAct.order.orderNumber, eomAct.order.origin, eomAct.order.errorId)">Empujar</button>
+                              </ng-template>
+
+                            </td>
+                            <td *ngIf="editable">
+                              <input  class="form-check-input" type="checkbox" value="{{eomAct.order.orderNumber}}" [(ngModel)]="eomAct.selectedEomAct" (change)="checkIfAllSelectedEomAct(listLegacyEOMAct)">
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="listLegacyEOMAct?.length > 0 && editable">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="loadingCheckEomAct" class="button is-small is-success" (click)="pushServiceMassiveOrdersEomAct()">Empujar Masivo</button>
+                                <img *ngIf="loadingCheckEomAct" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                <!--
+                                &nbsp;
+                                <button [disabled]="loadingCheck" class="button is-small is-success" (click)="pushMassiveSkuServiceEomAct()">SKU Servicio Masivo</button>
+                                -->
+                              </td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacyEOMAct?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentEomAct = $event" id="pgCurrentEomAct" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+
+                    <nwb-tab label="Actualizacion TMAS ({{listLegacyUpdateTmas?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacyUpdateTmas?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAllUpdateTmas(listLegacyUpdateTmas)" [checked]="selectedAllUpdateTmas">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacyUpdateTmas?.length === 0 || !listLegacyUpdateTmas">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                           <tr *ngIf="listLegacyUpdateTmas?.length === 0 || !listLegacyUpdateTmas">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody *ngIf="listLegacyUpdateTmas">
+                          <tr *ngFor="let updateTmas of listLegacyUpdateTmas | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentUpdateTmas, id: 'pgCurrentUpdateTmas' }">
+                            <td align="left">{{ updateTmas.order.orderNumber }}</td>
+                            <td align="left">{{ updateTmas.order.description }}</td>
+                            <td align="left">{{ updateTmas.order.descripcionStatus }}</td>
+                            <td align="left">{{ updateTmas.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap">
+                              <div *ngIf="editable; else desactivado">
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', updateTmas.order.orderNumber]" >Ver</button>
+                                <button *ngIf="!loading" class="button is-small is-success" (click)="callReinjectOrderService(updateTmas.order.orderNumber, updateTmas.order.origin, updateTmas.order.errorId)">Empujar</button>
+                                <!--
+                                  <a *ngIf="!loading" class="button is-small is-success"(click)="callUpdateItems(eomAct.order.orderNumber)">SKU Servicio</a>
+                                -->
+                              </div>
+                              <ng-template #desactivado>
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', updateTmas.order.orderNumber]" >Ver</button>
+                                <button [disabled]="true" class="button is-small is-success" (click)="callReinjectOrderService(updateTmas.order.orderNumber, updateTmas.order.origin, updateTmas.order.errorId)">Empujar</button>
+                              </ng-template>
+
+                            </td>
+                            <td *ngIf="editable">
+                              <input  class="form-check-input" type="checkbox" value="{{updateTmas.order.orderNumber}}" [(ngModel)]="updateTmas.selectedUpdateTmas" (change)="checkIfAllSelectedUpdateTmas(listLegacyUpdateTmas)">
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="listLegacyUpdateTmas?.length > 0 && editable">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="loadingCheckUpdateTmas" class="button is-small is-success" (click)="pushServiceMassiveOrdersUpdateTmas()">Empujar Masivo</button>
+                                <img *ngIf="loadingCheckUpdateTmas" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                <!--
+                                &nbsp;
+                                <button [disabled]="loadingCheck" class="button is-small is-success" (click)="pushMassiveSkuServiceEomAct()">SKU Servicio Masivo</button>
+                                -->
+                              </td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacyUpdateTmas?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentUpdateTmas = $event" id="pgCurrentUpdateTmas" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="PPL ({{listLegacyPPL?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacyPPL?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAllPpl(listLegacyPPL)" [checked]="selectedAllPpl">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacyPPL?.length === 0 || !listLegacyPPL">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                          <tr *ngIf="listLegacyPPL?.length === 0 || !listLegacyPPL">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody *ngIf="listLegacyPPL">
+                          <tr *ngFor="let ppl of listLegacyPPL  | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentPpl, id: 'pgCurrentPpl' } ">
+                            <td align="left">{{ ppl.order.orderNumber }}</td>
+                            <td align="left">{{ ppl.order.description }}</td>
+                            <td align="left">{{ ppl.order.descripcionStatus }}</td>
+                            <td align="left">{{ ppl.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap">
+                                <button  class="button is-small is-success" [routerLink]="['/back-office/order/', ppl.order.orderNumber]" >Ver</button>
+                                <button [disabled]="!editable" class="button is-small is-success" (click)="callReinjectOrderService(ppl.order.orderNumber, ppl.order.origin, ppl.order.errorId)">Empujar</button>
+
+                                <span *ngIf="ppl.order.dtenumber === 0 ">
+
+                                  <button [disabled]="!editableUpdateDte" type="button" (click)="updateTransactionNumber(ppl.order.orderNumber)" class="button is-small is-success">Actualizar DTE</button>
+                                </span>
+                                 <span *ngIf="ppl.order.dtenumber > 0 ">
+
+                                  <button [disabled]="true" type="button" (click)="updateTransactionNumber(ppl.order.orderNumber)" class="button is-small is-success" >Actualizar DTE</button>
+                                </span>
+
+                            </td>
+                            <td *ngIf="editable">
+                              <input  class="form-check-input" type="checkbox" value="{{ppl.order.orderNumber}}" [(ngModel)]="ppl.selectedPpl" (change)="checkIfAllSelectedPpl(listLegacyPPL)">
+                            </td>
+                          </tr>
+                        </tbody>
+                          <tbody *ngIf="listLegacyPPL?.length > 0 ">
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="width: 150px; white-space: nowrap">
+                              <button [disabled]="!editable" class="button is-small is-success" (click)="pushServiceMassiveOrdersPpl()">Empujar Masivo</button>
+                              <img *ngIf="loadingCheckPpl" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                            </td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacyPPL?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentPpl = $event" id="pgCurrentPpl" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="GC ({{listLegacyGF?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacyGF?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAllGc(listLegacyGF)" [checked]="selectedAllGc">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacyGF?.length === 0 || !listLegacyGF">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                          <tr *ngIf="listLegacyGF?.length === 0 || !listLegacyGF">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody *ngIf="listLegacyGF">
+                          <tr *ngFor="let gc of listLegacyGF | orderby: orderProperty  | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentGc, id: 'pgCurrentGc' }">
+                            <td align="left">{{ gc.order.orderNumber }}</td>
+                            <td align="left">{{ gc.order.description }}</td>
+                            <td align="left">{{ gc.order.descripcionStatus }}</td>
+                            <td align="left">{{ gc.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap">
+
+                              <!--<a *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order']">Ver</a>-->
+                              <div *ngIf="editable; else desactivado">
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', gc.order.orderNumber]" >Ver</button>
+                                <button *ngIf="!loading" class="button is-small is-success" (click)="callReinjectOrderService(gc.order.orderNumber, gc.order.origin, gc.order.errorId)">Empujar</button>
+                              </div>
+                              <ng-template #desactivado>
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', gc.order.orderNumber]" >Ver</button>
+                                <button [disabled]="true" class="button is-small is-success" (click)="callReinjectOrderService(gc.order.orderNumber, gc.order.origin, gc.order.errorId)">Empujar</button>
+                              </ng-template>
+
+                            </td>
+                            <td *ngIf="editable">
+                              <input  class="form-check-input" type="checkbox" value="{{gc.order.orderNumber}}" [(ngModel)]="gc.selectedGc" (change)="checkIfAllSelectedGc(listLegacyGF)">
+                            </td>
+                          </tr>
+                        </tbody>
+                          <tbody *ngIf="listLegacyGF?.length > 0 && editable">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="loadingCheckGc" class="button is-small is-success" (click)="pushServiceMassiveOrdersGc()">Empujar Masivo</button>
+                                <img *ngIf="loadingCheckGc" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                              </td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacyGF?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentGc = $event" id="pgCurrentGc" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+
+                    <nwb-tab label="Email ({{listLegacyEmail?.length}})">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th (click)="sortProperty('orderNumber')">N&uacute;mero OC</th>
+                            <th (click)="sortProperty('description')">Estado</th>
+                            <th (click)="sortProperty('orderStatusEom')">Detalle</th>
+                            <th (click)="sortProperty('update')">&Uacute;ltima Actualizaci&oacute;n</th>
+                            <th>Acciones</th>
+                            <th *ngIf="editable">
+                              <p *ngIf="listLegacyEmail?.length > 0 ">
+                                <input  class="form-check-input" type="checkbox" (change)="selectAllEmail(listLegacyEmail)" [checked]="selectedAllEmail">
+                              </p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <div *ngIf="editable; else desactivado">
+                          <tr *ngIf="listLegacyEmail?.length === 0 || !listLegacyEmail">
+                            <td colspan="6">No se encontraron datos</td>
+                          </tr>
+                        </div>
+                        <ng-template #desactivado>
+                          <tr *ngIf="listLegacyEmail?.length === 0 || !listLegacyEmail">
+                            <td colspan="5">No se encontraron datos</td>
+                          </tr>
+                        </ng-template>
+
+                        <tbody *ngIf="listLegacyEmail">
+                          <tr *ngFor="let email of listLegacyEmail | orderby: orderProperty  | paginate: { itemsPerPage: pgrows, currentPage: pgCurrentEmail, id: 'pgCurrentEmail' }">
+                            <td align="left">{{ email.order.orderNumber }}</td>
+                            <td align="left">{{ email.order.description }}</td>
+                            <td align="left">{{ email.order.descripcionStatus }}</td>
+                            <td align="left">{{ email.order.update }}</td>
+                            <td style="width: 150px; white-space: nowrap" >
+
+                              <!--<a *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order']">Ver</a>-->
+                              <div *ngIf="editable; else desactivado">
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', email.order.orderNumber]" >Ver</button>
+                                <button *ngIf="!loading" class="button is-small is-success" (click)="callReinjectOrderService(email.order.orderNumber, email.order.origin, email.order.errorId)">Empujar</button>
+                              </div>
+                              <ng-template #desactivado>
+                                <button *ngIf="!loading" class="button is-small is-success" [routerLink]="['/back-office/order/', email.order.orderNumber]" >Ver</button>
+                                <button [disabled]="true" *ngIf="!loading" class="button is-small is-success" (click)="callReinjectOrderService(email.order.orderNumber, email.order.origin, email.order.errorId)">Empujar</button>
+                              </ng-template>
+                             </td>
+                            <td *ngIf="editable">
+                              <input  class="form-check-input" type="checkbox" value="{{email.order.orderNumber}}" [(ngModel)]="email.selectedEmail" (change)="checkIfAllSelectedEmail(listLegacyEmail)">
+                            </td>
+                          </tr>
+                        </tbody>
+                          <tbody *ngIf="listLegacyEmail?.length > 0 && editable">
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td style="width: 150px; white-space: nowrap">
+                                <button [disabled]="loadingCheckEmail" class="button is-small is-success" (click)="pushServiceMassiveOrdersEmail()">Empujar Masivo</button>
+                                <img *ngIf="loadingCheckEmail" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                              </td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+
+                      </table>
+                      <div *ngIf="listLegacyEmail?.length > 0">
+                        <pagination-controls (pageChange)="pgCurrentEmail = $event" id="pgCurrentEmail" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                      </div>
+                    </nwb-tab>
+                  </nwb-tabs>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<modal #myModalUpdateTransactionNumber>
+    <modal-header>
+      <h1>Actualizar Numero DTE</h1>
+    </modal-header>
+    <modal-content>
+      <div>
+        <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+          <tr>
+            <th>Orden de compra</th>
+            <th>{{detail.ordernumber}}</th>
+          </tr>
+          <tr>
+            <th>Tipo de orden</th>
+            <th>{{detail.ordertype}}</th>
+          </tr>
+        </table>
+      </div>
+
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Actualizar DTE</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+              <tr>
+                <th>Número DTE</th>
+                <td>
+                  <input class="input" type="text" value="detail.dteNumber"
+                     [(ngModel)]="model.inputDteNumber"  (keypress)="onlyNumberKey($event)" #inputDteNumber="ngModel" required>
+
+                </td>
+                <td><input type="hidden" #ordenoc value="{{detail.ordernumber}}"></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td>
+                     <button class="button is-success" (click)="doEditTransactionNumber()">Actualizar</button>
+                     <button class="button is-success" (click)="myModalUpdateTransactionNumber.close()">Cerrar</button>
+                  </td>
+                </tr>
+        </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+    <!--
+    <modal-footer>
+      <button class="button is-success" (click)="myModalUpdateTransactionNumber.close()">Cerrar</button>
+    </modal-footer>
+  -->
+</modal>
+
+
+

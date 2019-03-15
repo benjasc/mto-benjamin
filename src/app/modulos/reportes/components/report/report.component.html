@@ -1,0 +1,154 @@
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Búsqueda Quiebre de Stock
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <form>
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Fecha </label>
+                    <div class="control">
+                      <my-date-picker disabled [options]="myDatePickerOptionsDesde" id="fechaCompraDesde" (dateChanged)="cambiaFechaDesde($event)"
+                        placeholder="" [selDate]="fechaCompraDesde|date: 'dd/MM/yyyy'||''"></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Tipo Documento</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="documentType" #documentType>
+                          <option value="0">TODOS LOS DOCUMENTOS</option>
+                          <option *ngFor="let documentTypes of listDocumentTypes" [value]="documentTypes.codigo">
+                            {{documentTypes.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Canal</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="channel" #channel>
+                          <option value="0">TODOS LOS CANALES</option>
+                          <option *ngFor="let channels of listChannels" [value]="channels.idChannel">
+                            {{channels.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Tipo Flujo</label>
+                    <div class="control">
+                      <div class="select">
+                        <select name="typeOrder" #typeOrder>
+                          <option value="0">TODOS LOS FLUJOS</option>
+                          <option *ngFor="let typeOrders of listTypeOrders" [value]="typeOrders.orderType">
+                            {{typeOrders.name | uppercase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <p class="control">
+                      <button class="button is-success" (click)="doSearch(documentType.value, channel.value, typeOrder.value)">
+                        Buscar
+                      </button>
+                      <!--<img *ngIf="reportInfo.loadings" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
+                        <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                        Limpiar
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div style="overflow:scroll;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th nowrap (click)="sortProperty('orderType')">Tipo de OC</th>
+                  <th nowrap (click)="sortProperty('tcPurchaseOrdersId')">ID OC</th>
+                  <th nowrap (click)="sortPropertyDate('tcPoLineId')">Order Line</th>
+                  <th nowrap (click)="sortProperty('fechaOrden')">Fecha OC</th>
+                  <th nowrap (click)="sortProperty('fechaCreacion')">Fecha Creacion</th>
+                  <th nowrap (click)="sortProperty('fechaCompromiso')">Fecha Compromiso</th>
+                  <th nowrap (click)="sortProperty('tcOrderId')">Orden de envio</th>
+                  <th nowrap (click)="sortProperty('descriptionOrderStatusEom')">Descripción estado EOM</th>
+                  <th nowrap (click)="sortProperty('descriptionStatusEom')">Estado EOM</th>
+                  <th nowrap (click)="sortProperty('customerUserId')">ID Cliente</th>
+                  <th nowrap (click)="sortProperty('sku')">SKU</th>
+                  <th nowrap (click)="sortProperty('orderSaleName')">Nombre de Venta OC</th>
+                  <th nowrap (click)="sortProperty('orderQty')">Cantidad OC</th>
+                  <th nowrap (click)="sortProperty('shippingQuantity')">Cantidad de Despacho</th>
+                  <th nowrap (click)="sortProperty('productClassId')">ID Departamento</th>
+                  <th nowrap (click)="sortProperty('department')">Nombre Departamento</th>
+                  <th nowrap (click)="sortProperty('codComuna')">Codigo Comuna</th>
+                  <th nowrap (click)="sortProperty('comuna')">Comuna</th>
+                  <!--<th>Acci&oacute;n</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let report of results | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th nowrap>{{report.orderType}}</th>
+                  <td nowrap>{{report.tcPurchaseOrdersId}}</td>
+                  <td nowrap>{{report.tcPoLineId}}</td>
+                  <td nowrap>{{report.fechaOrden }}</td>
+                  <td nowrap>{{report.fechaCreacion }}</td>
+                  <td nowrap>{{report.fechaCompromiso }}</td>
+                  <td nowrap>{{report.tcOrderId}}</td>
+                  <td nowrap>{{report.descriptionOrderStatusEom}}</td>
+                  <td nowrap>{{report.descriptionStatusEom}}</td>
+                  <td nowrap>{{report.customerUserId}}</td>
+                  <td nowrap>{{report.sku}}</td>
+                  <td nowrap>{{report.orderSaleName}}</td>
+                  <td nowrap>{{report.orderQty}}</td>
+                  <td nowrap>{{report.shippingQuantity}}</td>
+                  <td nowrap>{{report.productClassId}}</td>
+                  <td nowrap>{{report.department}}</td>
+                  <td nowrap>{{report.codComuna}}</td>
+                  <td nowrap>{{report.comuna}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination-controls style="display: block;" (pageChange)="pgCurrent = $event" previousLabel="Anterior"
+              nextLabel="Siguiente" maxSize="6">
+            </pagination-controls>
+            <a *ngIf='results.length > 0' class="button is-small is-success" (click)="doExport()">Exportar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

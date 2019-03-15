@@ -1,0 +1,675 @@
+<!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />-->
+
+<div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header" *ngFor="let detail of saleDetail">
+
+
+            <div class="card-header-title">
+                Orden N° {{detail.ordernumber}}
+            </div>
+
+            <a class="card-header-icon" aria-label="more options">
+                <div class="card-header-title">
+                    Tipo de orden: {{detail.ordertype}}
+                  </div>
+            </a>
+
+          </header>
+          <div class="card-content">
+            <div class="content">
+
+  <div style="display:inline-block;width:100%;overflow-y:scroll;">
+      <ul class="timeline timeline-horizontal">
+
+      <ng-container *ngFor="let detailBox of searchInfo.resultsBox.eventFlow  ">
+        <li class="timeline-item" *ngIf="detailBox.name != 'ESTADO INICIAL'">
+
+          <div class="timeline-panel" style="overflow-y:auto;">
+            <div class="timeline-heading">
+              <h4 class="timeline-title" style="font-size: 1.2em"><b>{{detailBox.name}}</b></h4>
+
+              <p *ngFor="let traza of this.resultado ">
+                 <small class="text-muted" *ngIf="detailBox.name == traza.engineStatus && traza.status != null">
+                   <i class="ti-calendar"></i>{{traza.fechaActualizacion}}
+
+                   <div *ngIf="traza.status.status != 200">
+                    <span style="color: red; font-weight: bold" (click)="doModalLegacy(traza.status.respLegacyHeader.request, traza.status.respLegacyHeader.response)">{{traza.status.status}}-{{traza.status.description}}</span>
+                   </div>
+                  <div *ngIf="traza.status.status == 200">
+                      <span style="color: green; font-weight: bold" (click)="doModalLegacy(traza.status.respLegacyHeader.request, traza.status.respLegacyHeader.response)">{{traza.status.status}}-{{traza.status.description}}</span>
+                  </div>
+
+                </small>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ng-container>
+      </ul>
+    </div>
+
+    <accordion>
+      <accordion-group [isOpened]="false">
+        <accordion-heading>
+          <h4 class="panel-title">Detalle de la OC</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <div *ngIf="saleDetail !== null && saleDetail !== undefined">
+        <table class="table" *ngFor="let detail of saleDetail" [ngSwitch]="detail.salesChannel">
+          <tr>
+                <th>Tipo de OC</th>
+                <td>{{detail.ordertype}}</td>
+              </tr>
+              <tr>
+                <th>Número de OC</th>
+                <td>{{detail.ordernumber}}</td>
+              </tr>
+              <tr>
+                <th>
+                  <div *ngIf="detail.foreignFlag === 1; else desactivado">
+                    DNI
+                  </div>
+                  <ng-template #desactivado>
+                    Rut
+                  </ng-template>
+                </th>
+                <td>{{detail.rut}}</td>
+              </tr>
+              <tr>
+                <th>Nombre del comprador</th>
+                <td>{{detail.nameCustomer}}</td>
+              </tr>
+              <tr>
+                <th>Fecha de la compra</th>
+                <td>{{detail.creationtime}}</td>
+              </tr>
+              <!-- <tr>
+                <th>Fecha de entrega</th>
+                <td>{{detail.shippingdate}}</td>
+              </tr> -->
+              <!--
+              <tr>
+                <th>Email</th>
+                <td *ngIf="editable">
+                    <input class="input" type="text" value="{{detail.email}}" (change)="doEditMail(detail.ordernumber, detail.email, editMail.value)" #editMail>
+                </td>
+                <td *ngIf="!editable">
+                  {{detail.email}}
+                </td>
+              </tr>
+              -->
+              <!---->
+
+              <tr>
+                <th>Email</th>
+                <td>
+                  {{detail.email}}
+                </td>
+              </tr>
+
+              <tr>
+                <th>Teléfono</th>
+                <td>{{detail.phoneNumber}}</td>
+              </tr>
+              <tr>
+                <th>País</th>
+                <td>{{detail.country}}</td>
+              </tr>
+              <tr>
+                <th>Tienda</th>
+                <td>{{detail.store}}</td>
+              </tr>
+
+              <tr>
+                <th>Canal de venta</th>
+                <td>{{detail.salesChannel}}</td>
+              </tr>
+
+              <tr>
+                  <th>Tipo de documento tributario</th>
+                  <td>{{detail.dteType}}</td>
+                </tr>
+              <!--
+              <tr>
+                <th>Número de documento tributario</th>
+                <td *ngIf="editable">
+                    <input class="input" type="text" value="{{detail.dteNumber}}"
+                    (keypress)="onlyNumberKey($event)"
+                    (change)="doEditDte(detail.ordernumber, detail.dteNumber, editDte.value)" #editDte>
+                </td>
+                <td *ngIf="!editable">
+                  {{detail.dteNumber}}
+                </td>
+              </tr>
+              -->
+              <tr>
+                <th>Número de documento tributario</th>
+                <td>
+                  {{detail.dteNumber}}
+                </td>
+              </tr>
+              <tr>
+                  <th>Puntos Cencosud</th>
+                  <td>{{detail.cencoPoints}}</td>
+              </tr>
+
+              <!-- <tr *ngIf="detail.ppeType != '-'"> -->
+              <tr *ngIf="detail.ppeType === 'Novios' && detail.codPPE != null">
+                <th>Tipo Compra {{detail.ppeType}}</th>
+                <td>{{detail.isShippingNovios}}</td>
+              </tr>
+              <!-- <tr *ngIf="detail.ppeType != '-'"> -->
+              <tr *ngIf="detail.ppeType === 'Novios' && detail.codPPE != null">
+                  <th>Código de {{detail.ppeType}}</th>
+                  <td>{{detail.codPPE}}</td>
+              </tr>
+              <!--
+                {{detail.salesChannel === 'FONOCOMPRA' ? 'EJECUTIVO' : ''}}
+
+              <tr *ngSwitchCase="'FONOCOMPRA'">
+                <th>Canal de venta</th>
+                <td>{{detail.salesChannel}}</td>
+              </tr>
+              -->
+              <tr *ngSwitchCase="'FONOCOMPRA'">
+                  <th>Rut Vendedor</th>
+                  <td>{{detail.executiveId}}</td>
+              </tr>
+              <tr *ngSwitchCase="'FONOCOMPRA'">
+                <th>Nombre vendedor</th>
+                <td>{{detail.executiveName}}</td>
+              </tr>
+              <tr *ngSwitchCase="'FONOCOMPRA'">
+                <th>Compañía Call-Center</th>
+                <td>{{detail.executiveCompanyId}}</td>
+              </tr>
+              <!--
+              <tr *ngSwitchCase="'KIOSCOS'">
+                <th>Canal de venta</th>
+                <td>{{detail.salesChannel}}</td>
+              </tr>
+            -->
+              <tr *ngSwitchCase="'KIOSCOS'">
+                <th>Rut Vendedor</th>
+                <td>{{detail.executiveId}}</td>
+              </tr>
+              <tr *ngSwitchCase="'KIOSCOS'">
+                <th>Nombre vendedor</th>
+                <td>{{detail.executiveName}}</td>
+              </tr>
+              <tr *ngSwitchCase="'KIOSCOS'">
+                <th>Tienda</th>
+                <td>{{detail.store}}</td>
+              </tr>
+
+              <tr  *ngSwitchDefault>
+                <th></th>
+                <td></td>
+              </tr>
+        </table>
+      </div>
+      <div *ngIf="recargarOrdenCompra">
+          <table class="table">
+              <tr>
+                <th>Problemas al cargar el servicio</th>
+                <td><button class="button is-success" (click)="reloadOc()">Recargar</button></td>
+              </tr>
+          </table>
+      </div>
+
+      </accordion-group>
+
+      <accordion-group [isOpened]="false">
+        <accordion-heading>
+          <h4 class="panel-title">Producto(s)</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <div *ngIf="!recargarProducto">
+        <table class="table" >
+            <thead title="Productos">
+                <tr>
+                  <th>SKU</th>
+                  <th>Tipo de Producto</th>
+                  <th>Departamento</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                  <th>Precio Unitario</th>
+                  <th>Descuento total Unitario</th>
+                  <th>Total Pagado</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let detailProduct of productDetailList.productDetailList">
+              <tr>
+                <td><a class="info-user__link" (click)="sendDispatchOrderInformation(detailProduct.sku)">{{detailProduct.sku}}</a></td>
+                <td>{{detailProduct.tipoProducto}}</td>
+                <td>{{detailProduct.departmentName}}</td>
+                <td>{{detailProduct.description}}</td>
+
+                <td>{{detailProduct.cantidad}}</td>
+                <td>{{detailProduct.unitPrice}}</td>
+                <td>{{detailProduct.unitDiscount}}</td>
+                <td>{{detailProduct.finalPrice}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        <div style="float: right !important;" class="column is-4">
+        <div class="card" >
+          <!--
+          <header class="card-header">
+                <p class="card-header-title">
+                    TOTAL ORDEN
+                </p>
+            </header>
+          -->
+            <div class="card-content">
+                <div class="content">
+
+                    <table class="table" *ngFor="let detailProductTotal of productDetailList.shippingOrderDetailTotalList">
+                        <thead>
+                          <tr>
+                            <th>TOTAL ORDEN</th>
+                            <th></th>
+                          </tr>
+                      </thead>
+                        <tbody>
+                            <tr>
+                                <th><strong>Sub-total</strong></th>
+                                <td>$ {{detailProductTotal.subTotal}}</td>
+                            </tr>
+                            <tr>
+                                <th><strong>Descuento (a la orden)</strong></th>
+                                <td>
+                                    <div>
+                                       $ {{detailProductTotal.discountorder}}
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><strong>Total</strong></th>
+                                <td>$ {{detailProductTotal.total}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div *ngIf="recargarProducto">
+        <table class="table">
+            <tr>
+              <th>Problemas al cargar el servicio</th>
+              <td><button class="button is-success" (click)="reloadProduct()">Recargar</button></td>
+            </tr>
+        </table>
+    </div>
+    <table class="table" >
+
+    </table>
+
+      </accordion-group>
+
+      <accordion-group [isOpened]="false">
+        <accordion-heading>
+          <h4 class="panel-title">Medio de pago</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <div *ngIf="!recargarMedioPago">
+          <table class="table">
+            <thead>
+                <tr>
+                  <th>Medio de pago</th>
+                  <th>Cupón descuento</th>
+                  <th>Número de cuotas</th>
+                  <th>Número de tarjeta</th>
+                  <!-- <th>Detalle subtotal (Bol/Fac)</th> -->
+                  <th>Total Pagado</th>
+                  <th>Código Aut.</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let detailMedioPago of mpagoDetailList.mpagoDetailList">
+              <tr>
+                <td>{{detailMedioPago.payment}}</td>
+                <td>{{detailMedioPago.discount}}</td>
+                <td>{{detailMedioPago.payFees}}</td>
+                <td>{{detailMedioPago.cardNumber}}</td>
+                <!-- <td>{{detailMedioPago.subtotal}}</td> -->
+                <td>{{detailMedioPago.totalPay}}</td>
+                <td>{{detailMedioPago.authCode}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="recargarMedioPago">
+            <table class="table">
+                <tr>
+                  <th>Problemas al cargar el servicio</th>
+                  <td><button class="button is-success" (click)="reloadPayment()">Recargar</button></td>
+                </tr>
+            </table>
+        </div>
+      </accordion-group>
+
+      <accordion-group [isOpened]="false">
+        <accordion-heading>
+          <h4 class="panel-title">Transacción de venta</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <div *ngIf="!recargarTransaccion">
+          <table class="table">
+              <thead>
+                  <tr>
+                    <th>Fecha compra</th>
+                    <th>N° Tienda</th>
+                    <th>N° Terminal</th>
+                    <th>Código de comercio</th>
+                    <th>Número de folio</th>
+                    <th>Número de transacción</th>
+                    <th>FECHA REGISTRO EN SDV</th>
+                    <!-- <th>Número de tarjeta</th> -->
+                  </tr>
+              </thead>
+              <tbody *ngFor="let detailTrx of trxDetailList">
+                <tr>
+                  <td>{{detailTrx.purchaseDate}}</td>
+                  <td>{{detailTrx.numStore}}</td>
+                  <td>{{detailTrx.numTerminal}}</td>
+                  <td>{{detailTrx.commerceId}}
+                  <td>{{detailTrx.folioNumber}}</td>
+                  <td>{{detailTrx.trxNumber}}</td>
+                  <td>{{detailTrx.sdvDate}}</td>
+                  <td style="display: none" *ngIf="displayConditionUrlDte(detailTrx.urlDte, detailTrx.folioNumber)"></td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table" *ngIf="dte === true">
+              <tr>
+                <td >
+                  <a  (click)="downloadUrlDte(displayUrlDte)">Pincha aqui para descargar (DTE)</a>
+                </td>
+                <ng-template #desactivadoUrlDte>
+                  <tr>
+                    <td>
+                    </td>
+                  </tr>
+                </ng-template>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="recargarTransaccion">
+          <table class="table">
+              <tr>
+                <th>Problemas al cargar el servicio</th>
+                <td><button class="button is-success" (click)="reloadTransaction()">Recargar</button></td>
+              </tr>
+          </table>
+      </div>
+      </accordion-group>
+
+      <accordion-group [isOpened]="false">
+          <accordion-heading>
+            <h4 class="panel-title">Orden de despacho</h4>
+            <span class="accordion-icon"></span>
+          </accordion-heading>
+
+          <div *ngIf="!recargarDespacho">
+          <table class="table" *ngFor="let detailShipping of resultsShippingDetail.shippingOrderToInfoDetail">
+            <tr>
+              <th>Tipo de Despacho</th>
+              <td>{{detailShipping.shippingType}}</td>
+            </tr>
+            <tr>
+              <th>N&ordm; Order de Despacho</th>
+              <td>{{detailShipping.numOd}}</td>
+            </tr>
+            <tr>
+              <th>Estado Order de Despacho</th>
+              <td>{{detailShipping.status}}</td>
+            </tr>
+            <tr>
+              <th>Nombre Destinatario</th>
+              <td>{{detailShipping.shippingName}}</td>
+            </tr>
+            <tr>
+              <th>Regi&oacute;n</th>
+              <td>{{detailShipping.region}}</td>
+            </tr>
+            <tr>
+              <th>Ciudad</th>
+              <td>{{detailShipping.city}}</td>
+            </tr>
+            <tr>
+              <th>Comuna</th>
+              <td>{{detailShipping.comuna}}</td>
+            </tr>
+
+            <tr>
+              <th>Direcci&oacute;n de Despacho</th>
+              <td>{{detailShipping.address}}</td>
+            </tr>
+            <tr *ngIf="detailShipping.shippingType === 'Pickup' ||  detailShipping.shippingType === 'Preventa Pickup' ||  detailShipping.shippingType === 'Programado Pickup'; else desactivadoPickup">
+              <th>Nombre de quien retira</th>
+              <td>{{detailShipping.nameWithDraw}}</td>
+            </tr>
+            <tr *ngIf="detailShipping.shippingType === 'Pickup' ||  detailShipping.shippingType === 'Preventa Pickup' ||  detailShipping.shippingType === 'Programado Pickup'; else desactivadoPickup">
+              <th>Rut de quien retira</th>
+              <td>{{detailShipping.rutWithDraw}}</td>
+            </tr>
+            <tr *ngIf="detailShipping.shippingType === 'Pickup' ||  detailShipping.shippingType === 'Preventa Pickup' ||  detailShipping.shippingType === 'Programado Pickup'; else desactivadoPickup">
+              <th>Tienda de retiro</th>
+              <td>{{detailShipping.storeName}}</td>
+            </tr>
+            <tr *ngIf="detailShipping.shippingType === 'Pickup' ||  detailShipping.shippingType === 'Preventa Pickup' ||  detailShipping.shippingType === 'Programado Pickup'; else desactivadoPickup">
+              <th>Direcci&oacute;n punto de retiro</th>
+              <td>{{detailShipping.storeAddress}}</td>
+            </tr>
+          </table>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Sku</th>
+                <th>Descripci&oacute;n</th>
+                <th>Cantidad</th>
+                <th>Fecha Compromiso Entrega</th>
+                <th>Fecha Ultima Actualizaci&oacute;n</th>
+                <th>Estado del Sku</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let detailShippingOrder of shippingOrderDetailList.shippingOrderDetailList">
+              <tr (click)="searchShippingOrderInfoDetail(detailShippingOrder.orderNumber,0)">
+                <td>{{detailShippingOrder.sku}}</td>
+                <td>{{detailShippingOrder.itemSaleName}}</td>
+                <td>{{detailShippingOrder.itemQuantity}}</td>
+                <td>{{detailShippingOrder.shippingEtaDate}}</td>
+                <td>{{detailShippingOrder.statusTime}}</td>
+                <td>{{detailShippingOrder.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!--
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Número</th>
+                <th>Estado</th>
+                <th>Nombre destinatario</th>
+                <th>Dirección de despacho</th>
+                <th>Fecha de entrega</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let detailShipping of searchInfo.resultsDetail.shippingDetailList">
+              <tr>
+                <td  >{{detailShipping.typeOD}}</td>
+                <td>{{detailShipping.numOD}}</td>
+                <td>{{detailShipping.statusOD}}</td>
+                <td>{{detailShipping.name}}</td>
+                <td>{{detailShipping.address}}</td>
+                <td>{{detailShipping.shippingDate}}</td>
+              </tr>
+            </tbody>
+          </table>
+        -->
+        </div>
+        <div *ngIf="recargarDespacho">
+            <table class="table">
+                <tr>
+                  <th>Problemas al cargar el servicio</th>
+                  <td><button class="button is-success" (click)="reloadShipping()">Recargar</button></td>
+                </tr>
+            </table>
+        </div>
+        </accordion-group>
+
+      <!--
+      <accordion-group *ngIf="searchInfo.resultsDetail.ppeDetailList != null">
+        <accordion-heading>
+          <h4 class="panel-title">Regalo de Novios</h4> <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <tbody *ngFor="let detailPPE of searchInfo.resultsDetail.ppeDetailList">
+            <tr>
+              <th>Código de Novios</th>
+              <td>{{detailPPE.id}}</td>
+            </tr>
+            <tr>
+              <th>Nombre de Novios</th>
+              <td>{{detailPPE.name1}} - {{detailPPE.name2}}</td>
+            </tr>
+            <tr>
+              <th>Mensaje de Saludo</th>
+              <td>{{detailPPE.messageText}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group> -->
+
+      <div *ngFor="let detailPPEType of ppeDetailList" [ngSwitch]="detailPPEType.ppeeType">
+        <div *ngSwitchCase="'Novios'">
+          <accordion-group>
+            <accordion-heading>
+              <h4 class="panel-title">Regalo de Novios</h4>
+              <span class="accordion-icon"></span>
+            </accordion-heading>
+            <table class="table">
+              <tbody *ngFor="let detailPPE of ppeDetailList">
+                <tr>
+                  <th>Código de Novios</th>
+                    <td>{{detailPPE.id}}</td>
+                </tr>
+                <tr>
+                  <th>Nombre de Novios</th>
+                  <td>{{detailPPE.name1}} - {{detailPPE.name2}}</td>
+                </tr>
+                <tr>
+                  <th>Mensaje de Saludo</th>
+                  <td>{{detailPPE.messageText}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </accordion-group>
+        </div>
+      </div>
+
+
+
+      <div>
+        <accordion-group>
+            <accordion-heading>
+              <h4 class="panel-title">Devoluci&oacute;n(es)</h4>
+              <span class="accordion-icon"></span>
+            </accordion-heading>
+            <div *ngIf="!recargarNotaCredito">
+            <table class="table" *ngFor="let detailNc of noteCreditDetailList.noteCreditDetailList">
+              <tr>
+                  <th>Nota de Credito</th>
+                  <td><a [routerLink]="['/back-office/devolution/', detailNc.ncDteNumber]" >
+                      {{detailNc.ncDteNumber}}
+                     </a>
+                  </td>
+              </tr>
+
+          </table>
+        </div>
+        <div *ngIf="recargarNotaCredito">
+            <table class="table">
+                <tr>
+                  <th>Problemas al cargar el servicio</th>
+                  <td><button class="button is-success" (click)="reloadOc()">Recargar</button></td>
+                </tr>
+            </table>
+        </div>
+        <div *ngIf="isEmptyNotaCredito">
+          <table class="table">
+              <tr>
+                <th style="text-align:center">Sin Datos</th>
+              </tr>
+          </table>
+      </div>
+          </accordion-group>
+      </div>
+
+
+
+
+    </accordion>
+
+            </div>
+
+            <button class="button is-success" (click)="volver()">Volver</button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <modal #modalHistory>
+      <modal-header>
+        <h1>Detalle</h1>
+      </modal-header>
+      <modal-content>
+        <accordion>
+
+          <accordion-group>
+            <accordion-heading>
+              <h4 class="panel-title">Request</h4> <span class="accordion-icon"></span>
+            </accordion-heading>
+            <div style="overflow:auto;">
+                <table class="table" >
+                  <tr>
+                    <th>Request</th>
+                    <td>{{searchInfo.requestModal}}</td>
+                  </tr>
+                </table>
+            </div>
+
+          </accordion-group>
+
+          <accordion-group>
+              <accordion-heading>
+                <h4 class="panel-title">Response</h4> <span class="accordion-icon"></span>
+              </accordion-heading>
+              <div style="overflow:auto;">
+                <table class="table">
+                    <tr>
+                      <th>Response</th>
+                      <td>{{searchInfo.responseModal}}</td>
+                    </tr>
+                </table>
+              </div>
+
+            </accordion-group>
+
+        </accordion>
+      </modal-content>
+      <modal-footer>
+        <button class="button is-success" (click)="modalHistory.close()">Cerrar</button>
+      </modal-footer>
+    </modal>

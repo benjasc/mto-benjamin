@@ -1,0 +1,53 @@
+
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4">
+        <div class="box login">
+          <figure class="login__logo">
+            <img src="/CencosudBO/assets/img/cencosud_logo.svg">
+          </figure>
+
+          <form [formGroup]="form" (ngSubmit)="loguear()" autocomplete="off">
+
+            <div class="field">
+              <div class="control">
+                <input class="input is-large" type="text" id="usuario" [ngModel]="usuario" name="usuario" formControlName="usuario" placeholder="Nombre de usuario" autofocus="">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <input class="input is-large" type="password" id="password" [ngModel]="password" formControlName="password" name="password" placeholder="password" autofocus="">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <div class="select is-large">
+                  <select formControlName="cadena" (change)="onChange($event.target.value)" required>
+                    <option value="" disabled selected>Cadena</option>
+                    <option *ngFor="let store of stores"
+                        [value]="store.idStore">
+                      {{store.name}}
+                    </option>
+                  </select>
+
+                </div>
+              </div>
+            </div>
+           
+            <button class="button is-block is-info is-large is-fullwidth" [disabled]="!form.valid || loading" type="submit">
+              Entrar
+            </button>
+
+
+<!-- 
+            <button class="button is-block is-info is-large is-fullwidth" (click)="validate()">Entrar</button>
+-->            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

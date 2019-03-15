@@ -1,0 +1,23 @@
+@media screen and (max-width: 768px) {
+    #menu-toggle:checked+.nav-menu {
+        display: block;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.example-container {
+    height: 400px;
+    overflow: auto;
+}
+
+.mat-cell {
+    font-size: 12px;
+}

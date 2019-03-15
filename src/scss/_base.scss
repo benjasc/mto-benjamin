@@ -1,0 +1,247 @@
+:root {
+  --color-1: #5bacec;
+  --color-2: #00b0eb;
+  --color-3: #e0f2fa;
+  --color-4: #4d4d4d;
+  --color-5: #818180;
+  --color-6: #909090;
+  --color-7: #ff009b;
+  --color-8: #5edecc;
+  --color-9: #a0f7f7;
+  --color-10: #003f6d;
+  --color-11: #546be2;
+  --color-12: #3896f4;
+}
+body {
+  background-color: #ffffff;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+}
+
+.icono {
+  width: 38px;
+  height: 38px;
+  display: block;
+  background-size: contain;
+  &.icono-order {
+    background-image: url('assets/img/iconos/list.svg');
+  }
+  &.icono-mail {
+    background-image: url('assets/img/iconos/mail.svg');
+  }
+  &.icono-reportes {
+    background-image: url('assets/img/iconos/report.svg');
+  }
+  &.icono-devoluciones {
+    background-image: url('assets/img/iconos/return-arrow.svg');
+  }
+  &.icono-mantenedores {
+    background-image: url('assets/img/iconos/settings.svg');
+  }
+}
+
+.card.card--select-header {
+  .card-header {
+    align-items: center;
+    padding-right: 0.75rem;
+  }
+}
+
+.container {
+  padding: 10px;
+}
+
+.navbar-menu {
+  padding: 0 40px;
+  .navbar-end {
+    align-items: center;
+  }
+}
+
+.navbar-dropdown {
+  background-color: white;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top: 2px solid #dbdbdb;
+  box-shadow: 0 8px 8px rgba(10, 10, 10, 0.1);
+  display: none;
+  font-size: 0.875rem;
+  left: 0;
+  min-width: 100%;
+  position: absolute;
+  top: 100%;
+  z-index: 20;
+}
+.navbar-item:hover .navbar-dropdown{
+  display: block;
+  }
+@media screen and (max-width: 1088px){
+.navbar-dropdown{
+display: none;
+}
+}
+
+.avatar {
+  background-color: var(--color-6);
+  background-image: url('assets/img/avatar.svg');
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-size: 70px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  };
+  .header__logo {
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 10px;
+    left: 50%;
+    &.paris {
+        background-image: url('assets/paris/paris-logo.svg');
+    }
+    &.johnson {
+        background-image: url('assets/johnson/johnson-logo.svg');
+    }
+    &.aligare {
+        background-image: url('assets/aligare/aligare-logo.png');
+    }
+  }    
+}
+
+.card-header-title {
+  color: var(--color-1);
+}
+
+table.table {
+  thead {
+    tr {
+      th {
+        background-color: var(--color-1);
+        color: #ffffff;
+        border: none;
+      }
+    }
+  }
+  &.table-inconcistencias {
+    thead {
+      tr {
+        th {
+          &:nth-child(3) {
+            width: 160px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.panel.panel-default {
+  margin-top: -1px;
+  .panel-heading {
+    background-color: #ffffff;
+    position: relative;
+    .accordion-icon {
+      font-family: 'themify';
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &:before {
+        content: '\e64b';
+      }
+    }
+    .panel-title {
+      margin: 0;
+      font-family: 'azo_sansmedium';
+      color: var(--color-1);
+      font-size: 20px;
+      a {
+        color: var(--color-1);
+      }
+    }
+  }
+  .panel-body {
+    padding: 10px;
+  }
+  &.dropup {
+    .panel-heading {
+      .accordion-icon {
+        &:before {
+          content: '\e648';
+        }
+      }
+    }
+  }
+}
+
+.owl-dt-calendar-table .owl-dt-calendar-cell-selected {
+  background-color: var(--color-1);
+}
+
+.modal-open {
+  app-menu {
+    z-index: 0;
+  }
+}
+.tabs ul {
+  align-items: flex-end;
+}
+.tabs li.is-active a {
+  color: var(--color-1);
+  border-bottom-color: var(--color-1);
+}
+.tabs.is-toggle li.is-active a {
+  background-color: var(--color-1);
+  border-color: var(--color-1);
+  color: #ffffff;
+}
+
+
+:root {
+  --loading-color: #616161; 
+}
+
+.dotloading { color: var(--loading-color); font-style: italic; }
+.dotloading:after {
+  content: '.';
+  animation: dots 1s steps(5, end) infinite;
+  font-size: 1.6em;
+}
+
+@keyframes dots {
+  0%, 20% {
+    color: rgba(0,0,0,0);
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  40% {
+    color: var(--loading-color);
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  60% {
+    text-shadow:
+      .25em 0 0 var(--loading-color),
+      .5em 0 0 rgba(0,0,0,0);}
+  80%, 100% {
+    text-shadow:
+      .25em 0 0 var(--loading-color),
+      .5em 0 0 var(--loading-color);}}

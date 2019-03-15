@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'azo_sansbold';
+    src: url('#{$font-path}/azosans-bold-webfont.woff2') format('woff2'),
+         url('#{$font-path}/azosans-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'azo_sanslight';
+    src: url('#{$font-path}/azosans-light-webfont.woff2') format('woff2'),
+         url('#{$font-path}/azosans-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'azo_sansmedium';
+    src: url('#{$font-path}/azosans-medium-webfont.woff2') format('woff2'),
+         url('#{$font-path}/azosans-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'azo_sansregular';
+    src: url('#{$font-path}/azosans-regular-webfont.woff2') format('woff2'),
+         url('#{$font-path}/azosans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

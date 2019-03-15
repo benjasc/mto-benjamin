@@ -1,0 +1,307 @@
+<ng4-loading-spinner [threshold]="0"  [loadingText]="'Please wait...'" [zIndex]="999" ></ng4-loading-spinner>
+<div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              B&uacute;squeda - Email
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </a>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <form action="">
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">RUT/DNI de cliente</label>
+                       <table>
+                            <tr>
+                              <td>
+                                <div class="control" [hidden]="emailInfo.tipoDoc=='dni'">
+                                  <input class="input" type="text" placeholder="99.999.999-9" maxlength="9" appRutValidation #rutEmailSearch formatRut>
+                                </div>
+                                <div class="control" [hidden]="emailInfo.tipoDoc=='rut'">
+                                <input class="input" type="text" placeholder="123456789012345E" maxlength="16"  #dniEmailSearch>
+                                </div>
+                              </td>
+                              <td>
+                              <div>
+                                <select class="select" (change)="selectTipoDoc($event.target.value)">
+                                  <option value="rut" selected>RUT</option>
+                                  <option value="dni">DNI</option>
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+                      </table>
+
+
+
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Orden de Compra</label>
+                      <div class="control">
+                        <input class="input" type="text" placeholder="12345678901234567890"  pInputText (keypress)="onlyNumberKey($event)" #ordenCompraSearch maxlength="20">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Email</label>
+                      <div class="control">
+                        <input class="input" type="text" placeholder="mail@mail.cl" maxlength="50" #emailSearch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Fecha de compra desde</label>
+                      <div class="control">
+                        <my-date-picker disabled [options]="myDatePickerOptionsDesde" id="fechaCompraDesde" (dateChanged)="cambiaFechaDesde($event)" placeholder=""
+                        [selDate]="fechaCompraDesde|date: 'dd/MM/yyyy'||''"></my-date-picker>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Fecha de compra hasta</label>
+                      <div class="control">
+                         <my-date-picker disabled [options]="myDatePickerOptionsHasta" id="fechaCompraHasta" (dateChanged)="cambiaFechaHasta($event)" placeholder=""
+                        [selDate]="fechaCompraHasta|date: 'dd/MM/yyyy'||''"></my-date-picker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <p class="control">
+                        <button [disabled]="loadings" class="button is-success" (click)="doSearchEmail(rutEmailSearch.value, dniEmailSearch.value, ordenCompraSearch.value, emailSearch.value)">
+                          Buscar
+                        </button>
+
+                       <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                          Limpiar
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('orderNumber')">Orden de Compra</th>
+                  <th (click)="sortPropertyDate('creationTime')">Fecha Compra</th>
+                  <th (click)="sortProperty('status')">Último Estado</th>
+                  <th>Estado Email</th>
+                  <th>Acci&oacute;n</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let email of emailInfo.results | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{email.orderNumber}}</th>
+                  <td>{{email.creationTime}}</td>
+                  <td>{{email.status}}</td>
+                  <td title="{{email.diagnostic}}">
+                    <!--Fallo del envío-->
+                    <span [ngSwitch]="email.failedType">
+                      <span *ngSwitchCase="0">Rebote Temporal</span>
+                      <span *ngSwitchCase="1">Rebote Permanente</span>
+                      <span *ngSwitchCase="2">Rebote Por Spam</span>
+                      <span *ngSwitchDefault>Envio Exitoso</span>
+                    </span>
+                  </td>
+                  <td>
+                    <a class="button is-small is-success" (click)="doEmailDetail(email.orderNumber)" >Ver</a>
+                  </td>
+                </tr>
+
+              </tbody>
+
+              <!-- <a *ngIf='emailInfo.results.length > 0' class="button is-small is-success" >Exportar</a> -->
+            </table>
+            <pagination-controls (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <modal #myModalEmailInfo>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="false">
+          <accordion-heading>
+            <h4 class="panel-title">Editar email</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+              <tr>
+                <th>RUT</th>
+                <td appRutValidation >{{detail.rut}}</td>
+              </tr>
+              <tr>
+                <th>Nombre del comprador</th>
+                <td>{{detail.nameCustomer}}</td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td><input [disabled]="!editable" type="email" value="{{detail.email}}" #emailUser/></td>
+                <td><input type="hidden" #ordenoc value="{{detail.ordernumber}}"></td>
+              </tr>
+              <tr *ngIf="editable">
+                  <td></td>
+                  <td>
+                      <button class="button is-small is-success" [disabled]="loadings" (click)="updateEmailCustomer(detail.email, ordenoc.value, emailUser.value)">Modificar</button>
+                  </td>
+                </tr>
+        </table>
+        </accordion-group>
+        <accordion-group [isOpened]="false">
+          <accordion-heading>
+            <h4 class="panel-title">Estado envío email</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+            <table class="table" *ngFor="let detailEmail of resultsEmailByOC">
+              <tr>
+                <th>Nombre</th>
+                <td>{{ detailEmail.emailName }}</td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>
+                  <!--Fallo en el envío-->
+                  <span [ngSwitch]="detailEmail.failedType">
+                      <span *ngSwitchCase="0">Rebote Temporal</span>
+                      <span *ngSwitchCase="1">Rebote Permanente</span>
+                      <span *ngSwitchCase="2">Rebote Por Spam</span>
+                      <span *ngSwitchDefault>Envio Exitoso</span>
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Fecha envío</th>
+                <td>{{ detailEmail.statusTime }}</td>
+              </tr>
+              <tr *ngIf="editable">
+                <th>Acci&oacute;n</th>
+                <td>
+                    <button class="button is-small is-success" (click)="reenviarEmailFailed(endpoint.value, endpointOrderNumber.value, endpointEmailType.value, endpointOrderType.value, '0', endpointIdFailedEmail.value)" [disabled]="emailInfo.loadingForwardEmail">Reenviar</button>
+                </td>
+              </tr>
+              <td><input type="hidden" #endpoint value="{{detailEmail.endpoint}}"></td>
+              <td><input type="hidden" #endpointOrderNumber value="{{detailEmail.orderNumber}}"></td>
+              <td><input type="hidden" #endpointEmailType value="{{detailEmail.emailType}}"></td>
+              <td><input type="hidden" #endpointOrderType value="{{detailEmail.orderType}}"></td>
+              <td><input type="hidden" #endpointIdFailedEmail value="{{detailEmail.idFailedEmail}}"></td>
+
+          </table>
+        </accordion-group>
+
+        <accordion-group [isOpened]="false">
+            <accordion-heading>
+              <h4 class="panel-title">Detalle de la OC</h4> <span class="accordion-icon"></span>
+            </accordion-heading>
+            <table class="table" *ngFor="let detail of resultsDetail.saleDetail">
+              <tr>
+                    <th>Tipo de OC</th>
+                    <td>{{detail.ordertype}}</td>
+                  </tr>
+                  <tr>
+                    <th>Número de OC</th>
+                    <td>{{detail.ordernumber}}</td>
+                  </tr>
+                  <!-- <tr>
+                    <th>Estado</th>
+                    <td>{{detail.status}}</td>
+                  </tr> -->
+                  <tr>
+                    <th>Nombre del comprador</th>
+                    <td>{{detail.nameCustomer}}</td>
+                  </tr>
+                  <tr>
+                    <th>Fecha de la compra</th>
+                    <td>{{detail.creationtime}}</td>
+                  </tr>
+                  <!-- <tr>
+                    <th>Fecha de entrega</th>
+                    <td>{{detail.shippingdate}}</td>
+                  </tr> -->
+                  <tr>
+                    <th>Email</th>
+                    <td>
+                      {{detail.email}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Teléfono</th>
+                    <td>{{detail.phoneNumber}}</td>
+                  </tr>
+                  <tr>
+                    <th>País</th>
+                    <td>{{detail.country}}</td>
+                  </tr>
+                  <tr>
+                    <th>Tienda</th>
+                    <td>{{detail.store}}</td>
+                  </tr>
+                  <tr>
+                    <th>Canal de venta</th>
+                    <td>{{detail.salesChannel}}</td>
+                  </tr>
+                  <tr>
+                      <th>Tipo de documento tributario</th>
+                      <td>{{detail.dteType}}</td>
+                    </tr>
+                  <tr>
+                    <th>Número de documento tributario</th>
+                    <td>{{detail.dteNumber}}</td>
+                  </tr>
+                  <tr>
+                      <th>Puntos Cencosud</th>
+                      <td>{{detail.cencoPoints}}</td>
+                  </tr>
+                  <tr *ngIf="detail.ppeType != '-'">
+                      <th>Tipo Compra {{detail.ppeType}}</th>
+                      <td>{{detail.isShippingNovios}}</td>
+                  </tr>
+                  <tr *ngIf="detail.ppeType != '-'">
+                    <th>Código de {{detail.ppeType}}</th>
+                    <td>{{detail.codPPE}}</td>
+                  </tr>
+            </table>
+          </accordion-group>
+
+      </accordion>
+    </modal-content>
+    <modal-footer>
+      <div *ngFor="let details of resultsDetail.saleDetail">
+        <button class="button is-success" [routerLink]="['/back-office/order/', details.ordernumber]">Ver Detalle</button>
+        <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      </div>
+      <!--
+      <button class="button is-success" (click)="myModalEmailInfo.close()" [routerLink]="['/back-office/order']">Ver Detalle</button>
+      <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      -->
+    </modal-footer>
+
+  </modal>

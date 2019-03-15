@@ -1,0 +1,69 @@
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Reporte Informacion Ordenes
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+           <div style="overflow:scroll;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th nowrap (click)="sortProperty('')">Fecha Reporte</th>
+                  <th nowrap (click)="sortProperty('')">Reporte Productos</th>
+                  <th nowrap (click)="sortProperty('')">Report Medio Pago</th>
+                  <th nowrap (click)="sortProperty('')">Reporte Novios</th>
+                  <th nowrap (click)="sortProperty('')">Reporte Fono Compra</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let dateLista of dateList | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th nowrap>{{dateLista}}</th>
+                  <th nowrap>
+
+                   <button type="reset" value="Limpiar" class="button is-success" (click)="downloadServiceReport(dateLista,dowload_productos_url)">
+                      Descargar
+                    </button>
+                  </th>
+                  <td nowrap>
+                    <button type="reset" value="Limpiar" class="button is-success" (click)="downloadServiceReport(dateLista,dowload_reporteMediosPago_url)">
+                      Descargar
+                    </button>
+                  </td>
+                  <td nowrap>
+                    <button type="reset" value="Limpiar" class="button is-success" (click)="downloadServiceReport(dateLista,dowload_reporteNovios_url)">
+                      Descargar
+                    </button>
+                  </td>
+                  <td nowrap>
+
+                    <button type="reset" value="Limpiar" class="button is-success" (click)="downloadServiceReport(dateLista,dowload_reporteFonoCompra_url)">
+                      Descargar
+                    </button>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+            <pagination-controls style="display: block;" (pageChange)="pgCurrent = $event" previousLabel="Anterior"
+              nextLabel="Siguiente" maxSize="6">
+            </pagination-controls>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

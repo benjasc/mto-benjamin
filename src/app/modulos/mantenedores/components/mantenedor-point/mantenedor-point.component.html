@@ -1,0 +1,230 @@
+<ng4-loading-spinner [threshold]="0"  [loadingText]="'Please wait...'" [zIndex]="999" ></ng4-loading-spinner>
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Puntos Base
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('codigo')">Id</th>
+                  <th (click)="sortProperty('name')">Tipo de Orden</th>
+                  <th (click)="sortProperty('factor')">Factor</th>
+                  <th (click)="sortProperty('factor')">Factor SDV</th>
+                  <th>Acci&oacute;n</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let basePoint of resultBasePoints | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{basePoint.codigo}}</th>
+                  <td>{{basePoint.name}}</td>
+                  <td>{{basePoint.factor}}</td>
+                  <td>{{basePoint.factorSdv}}</td>
+                  <td style="width: 150px; white-space: nowrap">
+                    <div *ngIf="editable; else desactivado">
+                     <button [disabled]="false" class="button is-small is-success" (click)="searchInfoBasePointUpdate(basePoint.loyaltyBasePoint)" >Editar</button>
+                    </div>
+                    <ng-template #desactivado>
+                      <button [disabled]="true" class="button is-small is-success" (click)="searchInfoBasePointUpdate(basePoint.loyaltyBasePoint)" >Editar</button>
+                    </ng-template>
+                  </td>
+                </tr>
+
+              </tbody>
+             </table>
+             <!--<pagination-controls (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Puntos Por Medio de Pago
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('codigo')">Id</th>
+                  <th (click)="sortProperty('name')">Tipo de Orden</th>
+                  <th (click)="sortProperty('factor')">Factor</th>
+                  <th (click)="sortProperty('factor')">Factor SDV</th>
+                  <th>Acci&oacute;n</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let loyaltyPay of resultLoyaltyPays | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{loyaltyPay.internatId}}</th>
+                  <td>{{loyaltyPay.name}}</td>
+                  <td>{{loyaltyPay.factor}}</td>
+                  <td>{{loyaltyPay.factorSdv}}</td>
+                  <td style="width: 150px; white-space: nowrap">
+                    <div *ngIf="editable; else desactivado">
+                     <button [disabled]="false" class="button is-small is-success" (click)="searchInfoLoyaltyPayUpdate(loyaltyPay.idLoyaltyPayPoint)" >Editar</button>
+                    </div>
+                    <ng-template #desactivado>
+                      <button [disabled]="true" class="button is-small is-success" (click)="searchInfoLoyaltyPayUpdate(loyaltyPay.idLoyaltyPayPoint)" >Editar</button>
+                    </ng-template>
+                  </td>
+                </tr>
+
+              </tbody>
+             </table>
+             <!--<pagination-controls (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>-->
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<modal #myModalUpdateBasePoint>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Editar Puntos Base</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngFor="let detailBasePoint of resultDetailBasePoints">
+              <tr>
+                <th>Id</th>
+                <td>{{detailBasePoint.codigo}}</td>
+                 <td><input   class="input" type="hidden"  value="{{detailBasePoint.idLoyaltyBasePoint}}" #idLoyaltyBasePointUpdate></td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td>
+                  {{detailBasePoint.name}}
+                </td>
+              </tr>
+              <tr>
+                <th>Factor</th>
+                <td>
+                  <input   class="input" type="text" placeholder="0.0000000000" value="{{detailBasePoint.factor}}" maxlength="12" #factorBasePointUpdate >
+                </td>
+              </tr>
+              <tr>
+                <th>Factor SDV</th>
+                <td>
+                  <input   class="input" type="text" placeholder="0.0000000000" value="{{detailBasePoint.factorSdv}}" maxlength="12" #factorSdvBasePointUpdate >
+                </td>
+              </tr>
+
+              <tr>
+                  <td></td>
+                  <td>
+                     <button class="button is-success" [disabled]="loadingUpdateBasePoint" (click)="updateBasePoint(idLoyaltyBasePointUpdate.value, factorBasePointUpdate.value, factorSdvBasePointUpdate.value)">Editar</button>
+                     <!--
+                       <img *ngIf="loadingUpdateBasePoint" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                     -->
+                      <button class="button is-success" (click)="myModalUpdateBasePoint.close()">Cerrar</button>
+                    </td>
+                </tr>
+        </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+    <!--
+    <modal-footer>
+      <div *ngFor="let details of searchInfoforEmail.resultsDetail.saleDetail">
+        <button class="button is-success" [routerLink]="['/back-office/order/', details.ordernumber]">Ver Detalle</button>
+        <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      </div>
+    </modal-footer>
+  -->
+  </modal>
+
+  <modal #myModalUpdateLoyaltyPay>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Editar Puntos Por Medio de Pagos</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngFor="let detailLoyaltyPay of resultDetailLoyaltyPays">
+              <tr>
+                <th>Id</th>
+                <td>{{detailLoyaltyPay.internatId}}</td>
+                 <td><input   class="input" type="hidden"  value="{{detailLoyaltyPay.idLoyaltyPayPoint}}" #idLoyaltyPayPointUpdate></td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td>
+                  {{detailLoyaltyPay.name}}
+                </td>
+              </tr>
+              <tr>
+                <th>Factor</th>
+                <td>
+                  <input   class="input" type="text" placeholder="0.0000000000" value="{{detailLoyaltyPay.factor}}" maxlength="12" #factorLoyaltyPayUpdate >
+                </td>
+              </tr>
+              <tr>
+                <th>Factor SDV</th>
+                <td>
+                  <input   class="input" type="text" placeholder="0.0000000000" value="{{detailLoyaltyPay.factorSdv}}" maxlength="12" #factorSdvLoyaltyPayUpdate >
+                </td>
+              </tr>
+
+              <tr>
+                  <td></td>
+                  <td>
+                     <button class="button is-success" [disabled]="loadingUpdateLoyaltyPay" (click)="updateLoyaltyPay(idLoyaltyPayPointUpdate.value, factorLoyaltyPayUpdate.value, factorSdvLoyaltyPayUpdate.value)">Editar</button>
+                     <!--
+                     <img *ngIf="loadingUpdateLoyaltyPay" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                     -->
+                      <button class="button is-success" (click)="myModalUpdateLoyaltyPay.close()">Cerrar</button>
+                    </td>
+                </tr>
+        </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+    <!--
+    <modal-footer>
+      <div *ngFor="let details of searchInfoforEmail.resultsDetail.saleDetail">
+        <button class="button is-success" [routerLink]="['/back-office/order/', details.ordernumber]">Ver Detalle</button>
+        <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      </div>
+    </modal-footer>
+  -->
+  </modal>

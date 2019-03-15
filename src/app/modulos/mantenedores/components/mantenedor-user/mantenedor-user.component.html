@@ -1,0 +1,393 @@
+<ng4-loading-spinner [threshold]="0"  [loadingText]="'Please wait...'" [zIndex]="999" ></ng4-loading-spinner>
+<div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Usuarios - B&uacute;squeda
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </a>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <form action="">
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Nombre</label>
+                       <div class="control">
+                          <input class="input" type="text" placeholder="Nombre" maxlength="50" #nameLastNameSearch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Estado</label>
+                      <div class="control">
+                        <div class="select">
+                            <select name="status" #statusSearch>
+                              <option value="-1">Todos los Estados</option>
+                              <option value="1">Habilitado</option>
+                              <option value="0">Deshabilitado</option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Usuario</label>
+                      <div class="control">
+                        <input class="input" type="text" placeholder="Usuario" maxlength="50" #userNameSearch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-column">
+                    <div class="field">
+                      <label class="label is-small">Perfiles</label>
+                      <div class="control">
+                        <div class="select">
+                            <select name="idProfile" #idProfileSearch>
+                              <option value="-1">Todos los Perfiles</option>
+                              <option *ngFor="let item of listaPerfile" [value]="item.idProfile">
+                                {{item.name | uppercase}}
+                              </option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="form-column">
+                    <div class="field">
+                      <p class="control">
+                        <button class="button is-success" (click)="searchInfo('-1', userNameSearch.value, statusSearch.value, idProfileSearch.value, nameLastNameSearch.value)">
+                          Buscar
+                        </button>
+                        <!--
+                        <img *ngIf="loadings" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                      />
+                        -->
+                       <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                          Limpiar
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('idUser')">Id</th>
+                  <th (click)="sortProperty('name')">Nombre</th>
+                   <th (click)="sortProperty('lastName')">Apellido</th>
+                  <th (click)="sortProperty('userName')">Usuario</th>
+                  <th (click)="sortProperty('status')">Estado</th>
+                  <th (click)="sortProperty('profileName')">Perfil</th>
+                  <th (click)="sortProperty('creationDate')">Fecha Creacion</th>
+                  <th>Acci&oacute;n</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let user of resultadoBusquedaUsuario | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{user.idUser}}</th>
+                  <td>{{user.name}}</td>
+                  <td>{{user.lastName}}</td>
+                  <td>{{user.userName}}</td>
+                  <td>
+                    <div *ngIf="user.status === 1; else state">
+                    Habilitado
+                    </div>
+                    <ng-template #state>
+                      Deshabilitado
+                    </ng-template>
+                  </td>
+                  <td>{{user.profileName}}</td>
+                  <td>{{user.creationDate}}</td>
+                  <td style="width: 150px; white-space: nowrap">
+                    <div *ngIf="editable; else desactivado">
+                      <button [disabled]="false" class="button is-small is-success" (click)="searchInfoUpdate(user.idUser, user.idStore, user.idProfile, user.profileName,user.status)" >Editar</button>
+                      <!---<button [disabled]="false" class="button is-small is-success" (click)="searchInfoDelete(user.idUser, user.idStore, user.idProfile)" >Eliminar</button>-->
+                      <span *ngIf="user.status === 1; else stateUser">
+                       <button [disabled]="false" class="button is-small is-success" (click)="searchInfoUpdateState(user.idUser, user.idStore, 0)" >Deshabilitar</button>
+                      </span>
+                      <ng-template #stateUser>
+                        <button [disabled]="false" class="button is-small is-success" (click)="searchInfoUpdateState(user.idUser, user.idStore, 1)" >Habilitar</button>
+                      </ng-template>
+                    </div>
+                    <ng-template #desactivado>
+                      <button [disabled]="true" class="button is-small is-success" (click)="searchInfoUpdate(user.idUser, user.idStore, user.idProfile, user.profileName,user.status)" >Editar</button>
+                      <!--<button [disabled]="true" class="button is-small is-success" (click)="searchInfoDelete(user.idUser, user.idStore, user.idProfile)" >Eliminar</button>-->
+                      <span *ngIf="user.status === 1; else stateUser">
+                       <button [disabled]="true" class="button is-small is-success" (click)="searchInfoUpdateState(user.idUser, user.idStore, 0)" >Deshabilitado</button>
+                      </span>
+                      <ng-template #stateUser>
+                        <button [disabled]="true" class="button is-small is-success" (click)="searchInfoUpdateState(user.idUser, user.idStore, 1)" >Habilitar</button>
+                      </ng-template>
+
+                    </ng-template>
+                  </td>
+                </tr>
+
+              </tbody>
+
+              <tbody *ngIf="editable">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td style="width: 150px; white-space: nowrap">
+                    <button [disabled]="false" class="button is-small is-success" (click)="searchInfoInsert()" >Crear</button>
+                  </td>
+                </tr>
+              </tbody>
+             </table>
+            <pagination-controls (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+            <!--<a *ngIf='emailInfo.results.length > 0' class="button is-small is-success" (click)="doExport()">Exportar</a>-->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <modal #myModalInsert>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Crear Usuario</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+
+          <table class="table">
+
+              <tr>
+                <th>Perfiles</th>
+                <td>
+                  <div class="select">
+                  <select id="idProfile" name="idProfile" [(ngModel)]="myModalInsertInputIdProfile" #idProfileInsert>
+                    <option value="">PERFILES</option>
+                    <option *ngFor="let listProfile of listaPerfile" value="{{listProfile.idProfile}}">
+                    {{listProfile.name | uppercase}}
+                    </option>
+                  </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>
+                  <div class="select">
+                  <select id="status" name="status" [(ngModel)]="myModalInsertInputStatus" #statusInsert>
+                    <option value="">ESTADO</option>
+                    <option value="1">HABILITADO</option>
+                    <option value="0">DESHABILITADO</option>
+                  </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td><input  class="input" type="text"  value="{{myModalInsertInputEmail}}" [(ngModel)]="myModalInsertInputEmail"  #emailInsert/></td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td>
+                  <input  class="input" minLength="3" maxLength="50" type="text" value="{{myModalInsertInputName}}" [(ngModel)]="myModalInsertInputName"   #nameInsert/>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Apellido</th>
+                <td><input  class="input" minLength="3" maxLength="50" type="text" value="{{myModalInsertInputLastName}}" [(ngModel)]="myModalInsertInputLastName"  #lastNameInsert/></td>
+              </tr>
+              <tr>
+                <th>Usuario</th>
+                <td>
+                  <input  class="input" minLength="3" maxLength="50" type="text" value="{{myModalInsertInputUserName}}" [(ngModel)]="myModalInsertInputUserName" #userNameInsert/>
+                  <br>
+                  (*) El Usuario debe ser el registrado en la red de cencosud
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td>
+                     <button class="button is-success" [disabled]="loadingInsert" (click)="insert('1', idProfileInsert.value, statusInsert.value, emailInsert.value, lastNameInsert.value, nameInsert.value, userNameInsert.value)">Crear</button>
+                     <!--<img *ngIf="loadingInsert" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                     -->
+                      <button class="button is-success" (click)="myModalInsert.close()">Cerrar</button>
+                    </td>
+                </tr>
+        </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+    <!--
+    <modal-footer>
+      <div *ngFor="let details of searchInfoforEmail.resultsDetail.saleDetail">
+        <button class="button is-success" [routerLink]="['/back-office/order/', details.ordernumber]">Ver Detalle</button>
+        <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      </div>
+    </modal-footer>
+  -->
+  </modal>
+
+  <modal #myModalUpdate>
+    <modal-header>
+      <h1></h1>
+    </modal-header>
+    <modal-content>
+      <accordion>
+        <accordion-group [isOpened]="true">
+          <accordion-heading>
+            <h4 class="panel-title">Editar Usuario</h4> <span class="accordion-icon"></span>
+          </accordion-heading>
+          <table class="table" *ngFor="let detail of resultsDetail">
+              <tr>
+                <th>Id</th>
+                <td>{{detail.idUser}}</td>
+                 <td><input   class="input" type="hidden" #idUserUpdate value="{{detail.idUser}}"></td>
+              </tr>
+              <tr>
+                <th>Perfiles</th>
+                <td>
+                  <div class="select">
+                  <select name="idProfile" #idProfileUpdate>
+                    <option value="{{idProfileUpdateSelect}}">{{profileNameUpdateSelect | uppercase}} </option>
+                    <option *ngFor="let listProfile of listaPerfile" [value]="listProfile.idProfile">
+                    {{listProfile.name | uppercase}}
+                    </option>
+                  </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>
+                  <div class="select">
+                     <select disabled id="statusUpdate" name="statusUpdate" class="form-control" #statusUpdate>
+                      <option value="{{statusUpdateSelected}}">{{statusUpdateDescriptionSelected | uppercase}}</option>
+
+                      </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td><input  class="input" minLength="3" maxLength="200" type="email" value="{{detail.email}}" #emailUpdate/></td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td>
+                  <input  class="input" minLength="3" maxLength="50" type="text" value="{{detail.name}}" #nameUpdate/>
+                </td>
+                <td></td>
+              </tr>
+               <tr>
+                <th>Apellido</th>
+                <td><input  class="input" minLength="3" maxLength="50" type="text" value="{{detail.lastName}}" #lastNameUpdate/></td>
+              </tr>
+              <tr>
+                <th>Usuario</th>
+                <td>
+                  <input  class="input" minLength="3" maxLength="50" type="text" value="{{detail.username}}" #userNameUpdate/>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td>
+                     <button class="button is-success" [disabled]="loadingUpdate" (click)="update(idUserUpdate.value, 1, idProfileUpdate.value, statusUpdate.value, emailUpdate.value, lastNameUpdate.value, nameUpdate.value, userNameUpdate.value)">Editar</button>
+                     <!--
+                     <img *ngIf="loadingUpdate" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                     -->
+                      <button class="button is-success" (click)="myModalUpdate.close()">Cerrar</button>
+                    </td>
+                </tr>
+        </table>
+        </accordion-group>
+      </accordion>
+    </modal-content>
+    <!--
+    <modal-footer>
+      <div *ngFor="let details of searchInfoforEmail.resultsDetail.saleDetail">
+        <button class="button is-success" [routerLink]="['/back-office/order/', details.ordernumber]">Ver Detalle</button>
+        <button class="button is-success" (click)="myModalEmailInfo.close()">Cerrar</button>
+      </div>
+    </modal-footer>
+  -->
+  </modal>
+
+  <!-- <modal #myModalDelete>
+    <modal-header>
+      <h1>Confirme</h1>
+    </modal-header>
+    <modal-content>
+      <input  class="input" type="hidden" value="{{idUserDeleteMyModal}}" #idUserDelete >
+      <input  class="input" type="hidden" value="{{idStoreDeleteMyModal}}" #idStoreDelete >
+      <input  class="input" type="hidden" value="{{idProfileDeleteMyModal}}" #idProfileDelete>
+    <div class="column is-6 is-offset-3">
+      <div>
+        <div>
+          <p><strong>¿ Realmente desea eliminar el usuario ?</strong></p>
+        </div>
+      </div>
+    </div>
+    </modal-content>
+
+    <modal-footer>
+        <button class="button is-success" [disabled]="loadingDelete" (click)="delete(idUserDelete.value, idStoreDelete.value, idProfileDelete.value)">Eliminar</button>
+        <button class="button is-success" (click)="myModalDelete.close()">Cerrar</button>
+    </modal-footer>
+
+  </modal> -->
+
+  <modal #myModalUpdateState>
+    <modal-header>
+      <h1>Confirme</h1>
+    </modal-header>
+    <modal-content>
+      <input  class="input" type="hidden" value="{{idUserUpdateStateMyModal}}" #idUserUpdateState >
+      <input  class="input" type="hidden" value="{{idStoreUpdateStateMyModal}}" #idStoreUpdateState >
+      <input  class="input" type="hidden" value="{{estadoUpdateStateMyModal}}" #estadoUpdateState>
+    <div class="column is-6 is-offset-3">
+      <div>
+        <div>
+          <p><strong>¿ Realmente desea cambiar el estado del usuario ?</strong></p>
+        </div>
+      </div>
+    </div>
+    </modal-content>
+
+    <modal-footer>
+        <button class="button is-success" [disabled]="loadingUpdateState" (click)="changedState(idUserUpdateState.value, idStoreUpdateState.value, estadoUpdateState.value)">Cambiar</button>
+        <!--
+        <img *ngIf="loadingUpdateState" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        -->
+        <button class="button is-success" (click)="myModalUpdateState.close()">Cerrar</button>
+    </modal-footer>
+
+  </modal>
+

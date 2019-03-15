@@ -1,0 +1,65 @@
+.app-block-info {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+
+    &__title {
+         font-family: 'azo_sansbold';
+         min-height: 50px;
+         font-size: 16px;
+         color: #4D4D4D;
+    }
+    &__number {
+        font-family: 'azo_sansbold';
+        font-size: 35px;
+        color: var(--color-1);
+        margin-top: auto;
+    }
+    &__failed {
+        font-family: 'azo_sansbold';
+        font-size: 20px;
+        color: red;
+        margin-top: auto;
+    }
+    &__from-last {
+        font-family: 'azo_sansregular';
+        margin-top: auto;
+        span {
+            font-family: 'azo_sansbold';
+            color: var( --color-8);
+            position: relative;
+            &:before {
+                display: block;
+                content: "";
+                width: 0;
+                height: 0;
+                position: absolute;
+                left: -5px;
+                top: 0;
+                transform: translateY(100%) translateX(-100%);
+            }
+        }
+        &.color-up {
+            span {
+                color: #43A047;
+                &:before {
+                    border-style: solid;
+                    border-width: 0 6px 6px 6px;
+                    border-color: transparent transparent #43A047 transparent;
+                }
+            }
+        }
+        &.color-down {
+            span {
+                color: #E53935;
+                &:before {
+                    border-style: solid;
+                    border-width: 6px 6px 0 6px;
+                    border-color: #E53935 transparent transparent transparent;
+                }
+            }
+        }
+    }
+}

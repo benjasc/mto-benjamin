@@ -1,0 +1,192 @@
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header" *ngFor="let detailHeader of searchInfo.resultsNcDetail.ncDetail">
+
+
+          <div class="card-header-title">
+            Nota de Credito N° {{detailHeader.ncDteNumber}}
+          </div>
+
+          <a class="card-header-icon" aria-label="more options">
+            <div class="card-header-title">
+              Tipo de orden: {{detailHeader.orderType}}
+            </div>
+          </a>
+
+
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <div style="display:inline-block;width:100%;overflow-y:scroll;">
+              <ul class="timeline timeline-horizontal">
+
+                <ng-container *ngFor="let detailBox of searchInfo.resultsBox.eventFlow ">
+                  <li class="timeline-item" *ngIf="detailBox.name != 'ESTADO INICIAL'">
+
+                    <div class="timeline-panel" style="overflow-y:auto;">
+                      <div class="timeline-heading">
+                        <h4 class="timeline-title" style="font-size: 1.2em">
+                          <b>{{detailBox.name}}</b>
+                        </h4>
+
+                        <p *ngFor="let traza of searchInfo.resultsTraza.txHistory  ">
+                          <small class="text-muted" *ngIf="detailBox.name == traza.engineStatus && traza.status != null">
+                            <i class="ti-calendar"></i>{{traza.fechaActualizacion}} -
+
+                            <div *ngIf="traza.status.status != 200">
+                              <span style="color: red; font-weight: bold" (click)="doModalLegacy(traza.jsonRequest, traza.jsonResponse)">{{traza.status.status}}-{{traza.status.description}}</span>
+                            </div>
+                            <div *ngIf="traza.status.status == 200">
+                              <span style="color: green; font-weight: bold" (click)="doModalLegacy(traza.jsonRequest, traza.jsonResponse)">{{traza.status.status}}-{{traza.status.description}}</span>
+                            </div>
+
+                          </small>
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+
+            <accordion>
+              <accordion-group [isOpened]="false">
+                <accordion-heading>
+                  <h4 class="panel-title">Detalle de Nota de Credito  <!--<span *ngFor="let detailHeader of searchInfo.resultsNcDetail.ncDetail">{{detailHeader.ncDteNumber}}</span>--></h4>
+                  <span class="accordion-icon"></span>
+                </accordion-heading>
+                <table class="table" *ngFor="let detail of searchInfo.resultsNcDetail.ncDetail">
+                  <tr>
+                    <th>Fecha de Emision</th>
+                    <td>{{detail.creationTime}}</td>
+                  </tr>
+                  <tr>
+                    <th>Tienda</th>
+                    <td>{{detail.locationId}}</td>
+                  </tr>
+                  <tr>
+                    <th>Transaccion</th>
+                    <td>{{detail.transactionNumber}}</td>
+                  </tr>
+                  <tr>
+                    <th>Terminal</th>
+                    <td>{{detail.terminalId}}</td>
+                  </tr>
+
+                  <tr>
+                    <th>Nombre Comprador o Contribuyente</th>
+                    <td>
+                      {{detail.nombre}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Rut</th>
+                    <td>{{detail.rut}}</td>
+                  </tr>
+
+                  <tr>
+                    <th>Direccion</th>
+                    <td>{{detail.address}}</td>
+                  </tr>
+                  <tr>
+                    <th>Comuna</th>
+                    <td>{{detail.comuna}}</td>
+                  </tr>
+                  <tr>
+                    <th>Ciudad</th>
+                    <td>{{detail.ciudad}}</td>
+                  </tr>
+                  <tr>
+                    <th>Region</th>
+                    <td>{{detail.region}}</td>
+                  </tr>
+                </table>
+              </accordion-group>
+
+
+
+              <accordion-group [isOpened]="false">
+                <accordion-heading>
+                  <h4 class="panel-title">Medio de pago Devoluciones</h4>
+                  <span class="accordion-icon"></span>
+                </accordion-heading>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Medio de pago</th>
+                      <th>Monto Devolucion</th>
+                      <th>Estado Devoluvion</th>
+                      <th>Fecha NC</th>
+                      <!--
+                      <th>Fecha Devolucion</th>
+                      -->
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let detailMedioPago of searchInfo.resultsNcDetail.mpagoNcDetailList">
+                    <tr>
+                      <td>{{detailMedioPago.payment}}</td>
+                      <td>{{detailMedioPago.ncAmount}}</td>
+                      <td>{{detailMedioPago.orderType}}</td>
+                      <td>{{detailMedioPago.creationTime}}</td>
+                      <!--
+                      <td>{{detailMedioPago.dateDevolution}}</td>
+                      -->
+                    </tr>
+                  </tbody>
+                </table>
+              </accordion-group>
+
+            </accordion>
+
+          </div>
+
+          <button class="button is-success" (click)="volver()">Volver</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<modal #modalHistory>
+  <modal-header>
+    <h1>Detalle</h1>
+  </modal-header>
+  <modal-content>
+    <accordion>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Request</h4>
+          <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <tr>
+            <th>Request</th>
+            <td>{{searchInfo.requestModal}}</td>
+          </tr>
+        </table>
+      </accordion-group>
+
+      <accordion-group>
+        <accordion-heading>
+          <h4 class="panel-title">Response</h4>
+          <span class="accordion-icon"></span>
+        </accordion-heading>
+        <table class="table">
+          <tr>
+            <th>Response</th>
+            <td>{{searchInfo.responseModal}}</td>
+          </tr>
+        </table>
+      </accordion-group>
+
+    </accordion>
+  </modal-content>
+  <modal-footer>
+    <button class="button is-success" (click)="modalHistory.close()">Cerrar</button>
+  </modal-footer>
+</modal>

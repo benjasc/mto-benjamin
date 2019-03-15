@@ -1,0 +1,148 @@
+<div class="container is-fluid">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Búsqueda - Bitácora
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                  <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <form>
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Nombre</label>
+                    <div class="control">
+                          <input class="input" type="text" placeholder="Nombre" maxlength="50" #nameLastNameSearch>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Eventos</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="event" #eventSearch>
+                              <option value="-1">TODOS LOS EVENTOS</option>
+                              <option *ngFor="let listEvent of listEvents" [value]="listEvent.idEvent">
+                                {{listEvent.name | uppercase}}
+                              </option>
+                            </select>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Orden de Compra</label>
+                    <div class="control">
+                      <input class="input" type="text" placeholder="12345678901234567890"  pInputText (keypress)="onlyNumberKey($event)"   maxlength="20"  #ordenCompraSearch>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Fecha Compra Desde</label>
+                    <div class="control">
+                        <my-date-picker disabled [options]="myDatePickerOptionsDesde" id="fechaCompraDesde" (dateChanged)="cambiaFechaDesde($event)" placeholder=""
+                        [selDate]="fechaCompraDesde|date: 'dd/MM/yyyy'||''"></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-column">
+                  <div class="field">
+                    <label class="label is-small">Fecha Compra Hasta</label>
+                    <div class="control">
+                        <my-date-picker disabled [options]="myDatePickerOptionsHasta" id="fechaCompraHasta" (dateChanged)="cambiaFechaHasta($event)" placeholder=""
+                        [selDate]="fechaCompraHasta|date: 'dd/MM/yyyy'||''"></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-columns">
+                <div class="form-column">
+                  <div class="field">
+                    <p class="control">
+                      <button [disabled]="loadings" class="button is-success" (click)="doSearch('-1', '-1', eventSearch.value, ordenCompraSearch.value, nameLastNameSearch.value)">   Buscar
+                      </button>
+                      <!--
+                      <img *ngIf="loadings" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                      />
+                      -->
+                      <button type="reset" value="Limpiar" class="button is-success" (click)="cleanResults()">
+                          Limpiar
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th (click)="sortProperty('idLog')">ID</th>
+                  <th (click)="sortProperty('userName')">Nombre Usuario</th>
+                  <th (click)="sortPropertyDate('evento')">Evento</th>
+                  <th (click)="sortProperty('newValue')">newValue</th>
+                  <th (click)="sortProperty('oldValue')">oldValue</th>
+                  <th (click)="sortProperty('modificationDate')">Fecha Modificacion</th>
+                  <th (click)="sortProperty('numOrden')">Numero OC</th>
+                  <!--
+                  <th>Acci&oacute;n</th>
+                  -->
+                </tr>
+              </thead>
+              <div>
+                <tr *ngIf="results?.length === 0 ">
+                  <td colspan="7">No se encontraron datos</td>
+                </tr>
+              </div>
+
+              <tbody>
+                <tr *ngFor="let bitacora of results | orderby: orderProperty | paginate: { itemsPerPage: pgrows, currentPage: pgCurrent }">
+                  <th>{{bitacora.idLog}}</th>
+                  <td>{{bitacora.userName}}</td>
+                  <td>{{bitacora.evento}}</td>
+                  <td>{{bitacora.newValue}}</td>
+                  <td>{{bitacora.oldValue}}</td>
+                  <td>{{bitacora.modificationDate}}</td>
+                  <td>{{bitacora.numOrden}}</td>
+                  <!--
+                  <td style="width: 150px; white-space: nowrap">
+                    <a class="button is-small is-success" [routerLink]="['/back-office/order/', bitacora.numOrden]">Ver OC</a>
+                   </td>
+                  -->
+                </tr>
+
+              </tbody>
+
+            </table>
+            <div *ngIf="results?.length >  0 ">
+                <pagination-controls style="display: block;" (pageChange)="pgCurrent = $event" previousLabel="Anterior" nextLabel="Siguiente" maxSize="6">
+              </pagination-controls>
+                <a  class="button is-small is-success" (click)="doExport()">Exportar</a>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

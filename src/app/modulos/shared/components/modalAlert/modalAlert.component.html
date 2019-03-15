@@ -1,0 +1,15 @@
+  <div #messageModal class="modal-dialog" style="width: 33%; text-align: center; position: absolute; width: 100%; left: 0;">
+    <div class="modal-content">
+      <div [ngClass]="(type==='info')?'modal-header info':(type==='warn')?'modal-header warn':(type==='success')?'modal-header success':'modal-header error'">
+          <div class="modal-header">
+              <h1>{{title}}</h1>
+          </div>
+      </div>
+      <div class="modal-body">        
+              <p *ngFor="let message of messages">{{message}}</p>
+      </div>
+      <div class="modal-footer" >
+              <button class="button is-success" (click)="cerrar()">Cerrar</button>
+      </div>
+    </div>
+  </div>

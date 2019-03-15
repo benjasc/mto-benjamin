@@ -1,0 +1,153 @@
+<div class="container is-fluid">
+    <div class="columns">
+      <div class="column is-12">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Par&aacute;metros - B&uacute;squeda
+            </p>
+            <button *ngIf="!isFather" class="button is-small is-success" style="top: 1vh;" (click)="volver()" >Volver</button>
+            <a href="#" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </a>
+          </header>
+          <div class="card-content">
+            <div class="content">
+                <table class="table" *ngIf="isFather">
+                  <thead>
+                    <tr>
+                      <th>ID Categor&iacute;a</th>
+                      <th>Categor&iacute;a</th>
+                      <th>Descripci&oacute;n</th>
+                      <th>Acci&oacute;n</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let property of listaPadres">
+                      <th>{{property.idProperty}}</th>
+                      <td>{{property.name}}</td>
+                      <td>{{property.description}}</td>
+                      <td style="width: 150px; white-space: nowrap">
+                          <button class="button is-small is-success" (click)="traeProperties(property.idProperty)" >Entrar</button>
+                        </td>
+                  </tbody>
+                </table>
+
+                <table class="table" *ngIf="!isFather">
+                    <thead>
+                      <tr>
+                        <th>ID Par&aacute;metro</th>
+                        <th>Nombre</th>
+                        <th>Valor</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Acci&oacute;n</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let property of listaHijos">
+                        <th>{{property.idProperty}}</th>
+                        <td>{{property.name}}</td>
+                        <td>{{property.value}}</td>
+                        <td>{{property.description}}</td>
+                        <td style="width: 150px; white-space: nowrap">
+                          <button class="button is-small is-success" (click)="ModificarProperty(property)" >Modificar</button>
+                        </td>
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <modal #myModalModifyValue>
+      <modal-header>
+          <p>Modificar Valor</p>
+      </modal-header>
+      <modal-content>
+          <div class="form-column">
+              <div class="field">
+                <label class="label is-small" style="background: yellow; text-align: center;">Tener en cuenta que un cambio puede afectar el correcto funcionamiento de alguna aplicaci&oacute;n</label>
+              </div>
+            </div>
+            <br>
+          <div class="form-column">
+            <div class="field">
+              <label class="label is-small">Categoria</label>
+              <div class="control">
+                <input disabled class="input" type="text" value="{{padreSeleccionado.name}}">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-column">
+              <div class="field">
+                  <label class="label is-small">Modificar Categoria</label>
+                <div class="select">
+                  <select name="area" [(ngModel)]="categoriaNueva">
+                    <option value="-1">Seleccione</option>
+                    <option *ngFor="let padre of padres" [value]="padre.idProperty">
+                      {{padre.name | uppercase}}
+                    </option>
+                  </select>
+                  </div>
+              </div>
+          </div>
+          <br>
+          <div class="form-column">
+            <div class="field">
+              <label class="label is-small">Nombre</label>
+              <div class="control">
+                <input disabled class="input" type="text" value="{{propiedadModificar.name}}">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-column">
+            <div class="field">
+              <label class="label is-small">Descripcion</label>
+              <div class="control">
+                <input class="input" type="text" [(ngModel)]="descripcion" (keyup)="verificaDescripcion()" value="{{propiedadModificar.description}}">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-column">
+            <div class="field">
+              <label class="label is-small">Valor Anterior</label>
+              <div class="control">
+                <input disabled class="input" type="text" value="{{propiedadModificar.value}}">
+              </div>
+            </div>
+          </div>
+            <br>
+            <div class="form-column">
+            <div class="field">
+                <label class="label is-small">Valor Nuevo</label>
+                <div class="control">
+                  <input class="input" type="text" maxlength="90" placeholder="Valor nuevo" [(ngModel)]="valorNuevo" (keyup)="verificaValores()">
+                </div>
+              </div>
+            </div>
+            <br>
+      </modal-content>
+      <modal-footer>
+        <button style="right: 20vh;" class="button is-success" (click)="cerrar()">Cerrar</button>
+        <button style="left: 18vh;" class="button is-success" [disabled]="!validaciones" (click)="modificarValores(propiedadModificar.idProperty, propiedadModificar.value, descripcion)">Modificar</button>
+      </modal-footer>
+  </modal>
+
+  <modal #modalMessage>
+      <modal-header>
+          <p>Notificacion</p>
+      </modal-header>
+      <modal-content>
+		<p>{{mensaje}}</p>
+      </modal-content>
+      <modal-footer>
+        <button class="button is-success" (click)="cerrarMensaje()">Cerrar</button>
+      </modal-footer>
+  </modal>
