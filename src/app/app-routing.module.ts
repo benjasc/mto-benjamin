@@ -1,4 +1,4 @@
-import { DataTableComponent} from './modulos/sgo/components/data-table/data-table.component'
+//import { DataTableComponent} from './modulos/sgo/components/data-table/data-table.component'
 import { OrderComponent } from './modulos/shared/components/order/order.component';
 import { DashboardComponent } from './modulos/ordenes/components/dashboard/dashboard.component';
 import { LoginComponent } from './modulos/shared/components/login/login.component';
@@ -22,13 +22,14 @@ import { MaintainerProfileComponent } from './modulos/mantenedores/components/ma
 import { BitacoraComponent } from './modulos/reportes/components/bitacora/bitacora.component';
 import { MantenedorParametrosComponent } from './modulos/mantenedores/components/mantenedor-parametros/mantenedor-parametros.component';
 import { EmisionUnitariaGdeComponent } from './modulos/gde/components/emisionUnitariaGde/emisionUnitariaGde.component';
-import { StepperComponent } from './modulos/sgo/components/steps/steps.component';
-import { InformationComponent } from './modulos/sgo/components/information/information.component';
+//import { StepperComponent } from './modulos/sgo/components/steps/steps.component';
+//import { InformationComponent } from './modulos/sgo/components/information/information.component';
+import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
 
 
 const routes: Routes = [
-  { path: 'pasos', component: StepperComponent },
-  { path: 'sgo', component: InformationComponent },
+  //{ path: 'pasos', component: StepperComponent },
+  { path: 'sgo', component: NavbarComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'welcome', component: WelcomeComponent},
   { path: 'search', component: SearchComponent },

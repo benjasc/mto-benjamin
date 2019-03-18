@@ -76,10 +76,11 @@ import { EmisionUnitariaGdeComponent } from './modulos/gde/components/emisionUni
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { DataTablesModule } from 'angular-datatables';
 import { TableConfigEmisionGDE } from './modulos/gde/util/tableConfig.util';
-import { DataTableComponent } from './modulos/sgo/components/data-table/data-table.component';
-import { StepperComponent } from './modulos/sgo/components/steps/steps.component';
+//import { DataTableComponent } from './modulos/sgo/components/data-table/data-table.component';
+//import { StepperComponent } from './modulos/sgo/components/steps/steps.component';
 import { MaterialModule } from './material';
-import { InformationComponent } from './modulos/sgo/components/information/information.component';
+//import { InformationComponent } from './modulos/sgo/components/information/information.component';
+import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
 
 registerLocaleData(localeCl, 'es-CL', localeClExtra);
 
@@ -126,9 +127,10 @@ registerLocaleData(localeCl, 'es-CL', localeClExtra);
     EscapeHtmlPipe,
     MantenedorParametrosComponent,
     EmisionUnitariaGdeComponent,
-    DataTableComponent,
-    StepperComponent,
-    InformationComponent
+    //DataTableComponent,
+    //StepperComponent,
+    //InformationComponent,
+    NavbarComponent
     
   ],
   imports: [
@@ -179,7 +181,7 @@ registerLocaleData(localeCl, 'es-CL', localeClExtra);
   ],
   entryComponents: [
     ModalAlertComponent,
-    LoadingComponent,StepperComponent
+    LoadingComponent,//StepperComponent
   ],
   bootstrap: [AppComponent]
 })
