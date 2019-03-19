@@ -1,31 +1,27 @@
-<ng4-loading-spinner
-  [threshold]="0"
-  [loadingText]="'Please wait...'"
-  [zIndex]="999"
-></ng4-loading-spinner>
+<ng4-loading-spinner [threshold]="0" [loadingText]="'Please wait...'" [zIndex]="999"></ng4-loading-spinner>
 <div class="container is-fluid">
-  <div class="columns">
-    <div class="column is-12">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            Emisión unitaria de guías de despacho
-          </p>
-          <a href="#" class="card-header-icon" aria-label="more options">
-            <span class="icon">
+    <div class="columns">
+        <div class="column is-12">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Emisión unitaria de guías de despacho
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                        <span class="icon">
               <i class="fas fa-angle-down" aria-hidden="true"></i>
             </span>
-          </a>
-        </header>
-        <div class="card-content">
-          <div class="content">
-            <form>
-              <div class="form-columns">
-                <div class="field">
-                  <div class="form-column">
-                    <label class="label is-small">Seleccione Rut u OC</label>
-                    <div class="control">
-                        <label class="radio">
+                    </a>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <form>
+                            <div class="form-columns">
+                                <div class="field">
+                                    <div class="form-column">
+                                        <label class="label is-small">Seleccione Rut u OC</label>
+                                        <div class="control">
+                                            <label class="radio">
                             <input style="margin-top: 17%;"
                               type="radio"
                               name="OCRUT"
@@ -35,7 +31,7 @@
                             />
                             N° OC
                           </label>
-                          <label class="radio">
+                                            <label class="radio">
                             <input style="margin-top: 17%;"
                               type="radio"
                               name="OCRUT"
@@ -45,58 +41,50 @@
                             />
                             RUT
                           </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="form-column">
-                    <label class="label is-small">Ingrese Rut u OC</label>
-                    <div class="control">
-                        <input
-                        class="input"
-                        type="text"
-                        placeholder="{{ textInput }}"
-                        [(ngModel)]="inputOCRut"
-                        name="InputOCRut"
-                        (change)='hide()'
-                        id="OCRUTID"
-                      />
-                      <span class="tag is-danger" *ngIf="messageValidBoolean">{{messageValid}}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="form-column">
-                    <div class="control">
-                        <Button style="margin-top: 27%;" class="button is-success" (click)='buscarGuiasUnitarias()'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="form-column">
+                                        <label class="label is-small">Ingrese Rut u OC</label>
+                                        <div class="control">
+                                            <input class="input" type="text" placeholder="{{ textInput }}" [(ngModel)]="inputOCRut" name="InputOCRut" (change)='hide()' id="OCRUTID" />
+                                            <span class="tag is-danger" *ngIf="messageValidBoolean">{{messageValid}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="form-column">
+                                        <div class="control">
+                                            <Button style="margin-top: 27%;" class="button is-success" (click)='buscarGuiasUnitarias()'>
                             Buscar
                             </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
+
+                        <!-- Resultados de la búsqueda , los cuales estaran contenidos dentro de la etiqueta card-->
+                        <div class="card">
+                            <div class="card-content">
+                                <p class="title">
+                                    Resultados de la búsqueda
+                                </p>
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover" class="table">
+
+                                </table>
+                            </div>
+                        </div>
+
+
                     </div>
-                  </div>
                 </div>
-              </div>
-            </form>
-
-
-
-
-
-            <!-- Resultados de la búsqueda , los cuales estaran contenidos dentro de la etiqueta card-->
-            <div class="card">
-                <div class="card-content">
-                  <p class="title">
-                    Resultados de la búsqueda
-                  </p>
-                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-
-                    </table>
-                </div>
-              </div>
-
-
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
