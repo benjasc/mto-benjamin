@@ -31,7 +31,7 @@ import { AdministracionUsuariosComponent } from './modulos/sgo/components/admini
 
 const routes: Routes = [
   //{ path: 'pasos', component: StepperComponent },
-  { path: 'administracion', component: NavbarComponent },
+  { path: 'administracion', component: AdministracionUsuariosComponent },
   { path: 'sgo', component: NavbarComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'welcome', component: WelcomeComponent},

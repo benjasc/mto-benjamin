@@ -79,10 +79,10 @@ import { TableConfigEmisionGDE } from './modulos/gde/util/tableConfig.util';
 //import { DataTableComponent } from './modulos/sgo/components/data-table/data-table.component';
 //import { StepperComponent } from './modulos/sgo/components/steps/steps.component';
 import { MaterialModule } from './material';
-//import { InformationComponent } from './modulos/sgo/components/information/information.component';
 import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
 import { LoginComponent } from './modulos/sgo/components/login/login.component';
 import { AdministracionUsuariosComponent } from './modulos/sgo/components/administracion-usuarios/administracion-usuarios.component';
+import { MainNavbarComponent } from './modulos/sgo/components/shared/components/main-navbar/main-navbar.component';
 
 registerLocaleData(localeCl, 'es-CL', localeClExtra);
 
@@ -133,7 +133,8 @@ registerLocaleData(localeCl, 'es-CL', localeClExtra);
     //StepperComponent,
     //InformationComponent,
     NavbarComponent,
-    AdministracionUsuariosComponent
+    AdministracionUsuariosComponent,
+    MainNavbarComponent
     
   ],
   imports: [

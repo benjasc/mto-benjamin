@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MainNavbarComponent} from '../shared/components/main-navbar/main-navbar.component';
 
 @Component({
   selector: 'app-administracion-usuarios',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdministracionUsuariosComponent implements OnInit {
 
-  constructor() { }
+  titulo:string ;
+  constructor() {  
+    this.titulo = "Administracion de Usuarios";
+    sessionStorage.setItem('titulo', this.titulo);
+   }
 
   ngOnInit() {
   }
