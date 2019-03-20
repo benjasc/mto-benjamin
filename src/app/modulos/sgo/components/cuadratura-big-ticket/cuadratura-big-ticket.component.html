@@ -1,0 +1,49 @@
+<nav class="navbar is-white topNav">
+    <div class="container">
+        <div id="topNav" class="navbar-menu">
+            <div class="navbar-start">
+                <p class="card-header-title">Consulta de Cuadratura BigTicket - BackOffice</p>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="color ">
+    <section class="container is-fluid ">
+        <div class="columns">
+            <div class="column is-9">
+                <div class="card">
+                    <p class="card-header-title">Ingrese Parámetros</p>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field ">
+                                <label class="label is-small ">Fecha Venta:</label>
+                                <div class="control is-disabled ">
+                                    <my-date-picker [(ngModel)]="fecha" (dateChanged)="action()"></my-date-picker>
+                                </div>
+                                <!--<app-email></app-email>-->
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field ">
+                                <label class="label is-small ">Sucursal Venta:</label>
+                                <div class="select">
+                                    <select>
+                                      <option>(Todos)</option>
+                                      <option>With options</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-3">
+                <div class="card">
+                    <div class="columns">
+                        <h1>hola</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

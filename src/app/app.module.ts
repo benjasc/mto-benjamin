@@ -83,6 +83,7 @@ import { MaterialModule } from './material';
 import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
 import { LoginComponent } from './modulos/sgo/components/login/login.component';
 import { AdministracionUsuariosComponent } from './modulos/sgo/components/administracion-usuarios/administracion-usuarios.component';
+import { CuadraturaBigTicketComponent } from './modulos/sgo/components/cuadratura-big-ticket/cuadratura-big-ticket.component';
 
 registerLocaleData(localeCl, 'es-CL', localeClExtra);
 
@@ -133,7 +134,8 @@ registerLocaleData(localeCl, 'es-CL', localeClExtra);
     //StepperComponent,
     //InformationComponent,
     NavbarComponent,
-    AdministracionUsuariosComponent
+    AdministracionUsuariosComponent,
+    CuadraturaBigTicketComponent
     
   ],
   imports: [

@@ -1,5 +1,5 @@
 import { Utils } from './../../../shared/utils/utils';
-import { DateFormat } from './dateFormat';
+import { DateFormat } from '../../../shared/utils/dateFormat';
 import { EmailService } from './../../../shared/services/email.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IMyDateModel } from 'mydatepicker';
@@ -70,38 +70,38 @@ export class EmailComponent implements OnInit {
 
   ngOnInit() {
     // Limpiar pantalla al ingresar
-    this.cleanResults();
+    // this.cleanResults();
 
-    // usuario
-    this.usuario = this.config[1].val;
+    // // usuario
+    // this.usuario = this.config[1].val;
 
-    // menu
-    this.menu = this.config[2].val;
+    // // menu
+    // this.menu = this.config[2].val;
 
-    // url
-    this.url = this.router.url;
+    // // url
+    // this.url = this.router.url;
 
-    // Modulos de acceso a ordenes
-    console.log('Access : ' + JSON.stringify(this.menu) + ' / ' + this.usuario.idUser + ' / ' + this.router.url);
-    for (let i = 0; i < this.menu.length; i++) {
-      for (let j = 0; j < this.menu[i].subItems.length; j++) {
-        console.log('Access Menu: ' + this.menu[i].idAccess + ' / ' + this.menu[i].idModule +
-         ' / ' + this.menu[i].name + ' / ' + this.menu[i].url);
+    // // Modulos de acceso a ordenes
+    // console.log('Access : ' + JSON.stringify(this.menu) + ' / ' + this.usuario.idUser + ' / ' + this.router.url);
+    // for (let i = 0; i < this.menu.length; i++) {
+    //   for (let j = 0; j < this.menu[i].subItems.length; j++) {
+    //     console.log('Access Menu: ' + this.menu[i].idAccess + ' / ' + this.menu[i].idModule +
+    //      ' / ' + this.menu[i].name + ' / ' + this.menu[i].url);
 
-        console.log( 'Access SubMenu: ' + this.menu[i].subItems[j].idAccess + ' / ' + this.menu[i].subItems[j].idModule +
-         ' / ' + this.menu[i].subItems[j].name + ' / ' + ' / ' + this.menu[i].subItems[j].url);
+    //     console.log( 'Access SubMenu: ' + this.menu[i].subItems[j].idAccess + ' / ' + this.menu[i].subItems[j].idModule +
+    //      ' / ' + this.menu[i].subItems[j].name + ' / ' + ' / ' + this.menu[i].subItems[j].url);
 
-        if (this.router.url === this.menu[i].subItems[j].url) {
-          if (this.menu[i].subItems[j].idAccess > 1) {
-            console.log('true');
-            this.editable = true;
-          } else {
-            console.log('false');
-            this.editable = false;
-          }
-        }
-      }
-    }
+    //     if (this.router.url === this.menu[i].subItems[j].url) {
+    //       if (this.menu[i].subItems[j].idAccess > 1) {
+    //         console.log('true');
+    //         this.editable = true;
+    //       } else {
+    //         console.log('false');
+    //         this.editable = false;
+    //       }
+    //     }
+    //   }
+    // }
     console.log('Editable : ' + this.editable);
     const volverEmail = sessionStorage.getItem('volverEmail');
     const formEmailRut = sessionStorage.getItem('formEmailRut');
