@@ -12,17 +12,11 @@ export class NavbarComponent implements AfterViewInit, OnDestroy, OnInit {
 displayedColumns = ['Fecha', 'Canal', 'OC', 'EstOC','TipoDesp','FactBol','FolioDte'];
   dataSource = ELEMENT_DATA;
   //tabla 2
-//tabla ultima
-displayedColumnss = ['item', 'cost'];
-  transactions: Transaction[] = [
-    {item: 'Beach ball', cost: 4},
-    {item: 'Towel', cost: 5},
-    {item: 'Frisbee', cost: 2},
-    {item: 'Sunscreen', cost: 4},
-    {item: 'Cooler', cost: 25},
-    {item: 'Swim suit', cost: 15},
-  ];
-//tabla ultima
+  //tabla 3
+displayedColumnss = ['Codigo', 'Descripcion', 'Valor'];
+dataSourcee = ELEMENT_DATA2;
+//tabla 3
+
 
   @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
@@ -93,11 +87,7 @@ displayedColumnss = ['item', 'cost'];
       this.dtTrigger.next();
     });
   }
-//tabla ultima
-  getTotalCost() {
-    return this.transactions.map(t => t.cost).reduce((acc, value) => acc + value, 0);
-  }
-  //tabla ultima
+
 }
 
 export interface Element {
@@ -115,10 +105,17 @@ const ELEMENT_DATA: Element[] = [
   {Fecha: '01-07-2015', Canal: 'Ripley.com', OC: 53748294, EstOC: 'Boleta',TipoDesp:'D.Domicilio AM',FactBol:'Boleta',FolioDte:288239344}
 ];
 
-
-
-//-----tabla ultima
-export interface Transaction {
-  item: string;
-  cost: number;
+//tabla 3
+export interface Element2 {
+  Codigo: string;
+  Descripcion: String;
+  Valor: number;
+  
 }
+
+const ELEMENT_DATA2: Element2[] = [
+  {Codigo: '54354677895', Descripcion: 'Docking Philips 1x39.0000000', Valor: 39000},
+  {Codigo: '54354677895', Descripcion: 'Docking Philips 1x39.0000000', Valor: 39000},
+  {Codigo: '54354677895', Descripcion: 'Docking Philips 1x39.0000000', Valor: 39000}
+];
+//tabla 3

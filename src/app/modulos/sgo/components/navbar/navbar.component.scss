@@ -105,9 +105,23 @@ th {
     flex-direction: column;
     max-height: 500px;
     min-width: 300px;
+    overflow-x: scroll;
 }
 
 .mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+
+.example-container2 {
+    display: flex;
+    flex-direction: column;
+    max-height: 200px;
+    min-width: 300px;
+    //  overflow-x: scroll; para añadir scroll horizontal
+}
+
+.mat-table2 {
     overflow: auto;
     max-height: 500px;
 }

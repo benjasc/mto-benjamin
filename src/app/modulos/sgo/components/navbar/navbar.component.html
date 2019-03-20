@@ -153,9 +153,9 @@
                                     <div class="field ">
                                         <label class="label is-small ">Medio de Pago</label>
                                         <div class="control ">
-                                            <article class="message is-dark">
-                                                <div class="message-body">
-                                                    Pago con tarjeta ripley
+                                            <article class="message is-info">
+                                                <div class="message-body has-text-centered">
+                                                    TARJETA RIPLEY - PAN ****3013 - COD.AUTORIZADO:13532
                                                 </div>
                                             </article>
                                         </div>
@@ -193,31 +193,60 @@
                         </div>
                     </div>
                 </div>
-                <div class="column is-7">
-                    <div class="card  ">
-                        <div class="content ">
-                            <div class="example-container mat-elevation-z8">
-                                <mat-table #table [dataSource]="transactions">
-                                    <!-- Item Column -->
-                                    <ng-container matColumnDef="item">
-                                        <mat-header-cell *matHeaderCellDef> Item </mat-header-cell>
-                                        <mat-cell *matCellDef="let transaction"> {{transaction.item}} </mat-cell>
-                                        <mat-footer-cell *matFooterCellDef> Total </mat-footer-cell>
-                                    </ng-container>
+                <div class="column is-8">
+                    <div class="card">
+                        <div class="content" style="margin-bottom: 0px;">
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field ">
+                                        <label class="label is-small ">Detalle de Compra</label>
+                                        <div class="example-container2 mat-elevation-z8">
+                                            <mat-table #table [dataSource]="dataSourcee">
 
-                                    <!-- Cost Column -->
-                                    <ng-container matColumnDef="cost">
-                                        <mat-header-cell *matHeaderCellDef> Cost </mat-header-cell>
-                                        <mat-cell *matCellDef="let transaction"> {{transaction.cost | currency}} </mat-cell>
-                                        <mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </mat-footer-cell>
-                                    </ng-container>
+                                                <!--- Note that these columns can be defined in any order.
+                                                The actual rendered columns are set as a property on the row definition" -->
 
-                                    <mat-header-row *matHeaderRowDef="displayedColumnss"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumnss;"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="displayedColumnss; sticky: true"></mat-footer-row>
-                                </mat-table>
+                                                <!-- Position Column -->
+                                                <ng-container matColumnDef="Codigo">
+                                                    <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.Codigo}} </mat-cell>
+                                                </ng-container>
+
+                                                <!-- Name Column -->
+                                                <ng-container matColumnDef="Descripcion">
+                                                    <mat-header-cell *matHeaderCellDef> Descripcion Cantidad x Precio </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>
+                                                </ng-container>
+
+                                                <!-- Weight Column -->
+                                                <ng-container matColumnDef="Valor">
+                                                    <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{element.Valor}} </mat-cell>
+                                                </ng-container>
+                                                <mat-header-row *matHeaderRowDef="displayedColumnss"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnss;"></mat-row>
+                                            </mat-table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
+                        </div>
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field ">
+                                    <label class="label is-small ">SUBTOTAL</label>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field ">
+                                    <label class="label is-small ">TOTAL EXENTO</label>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field ">
+                                    <label class="label is-small ">TOTAL</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,25 +255,3 @@
 
     </section>
 </div>
-<footer class="footer ">
-    <div class="container ">
-        <div class="content has-text-centered ">
-            <div class="columns is-mobile is-centered ">
-                <div class="field is-grouped is-grouped-multiline ">
-                    <div class="control ">
-                        <div class="tags has-addons ">
-                            <a class="tag is-link " href="https://github.com/dansup/bulma-templates ">Bulma Templates</a>
-                            <span class="tag is-light ">Daniel Supernault</span>
-                        </div>
-                    </div>
-                    <div class="control ">
-                        <div class="tags has-addons ">
-                            <a class="tag is-link ">The source code is licensed</a>
-                            <span class="tag is-light ">MIT &nbsp;<i class="fa fa-github "></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
