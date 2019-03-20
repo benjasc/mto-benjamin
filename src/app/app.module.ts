@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './modulos/shared/components/header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './modulos/ordenes/components/dashboard/dashboard.component';
-import { LoginComponent } from './modulos/shared/components/login/login.component';
+//import { LoginComponent } from './modulos/shared/components/login/login.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { ChartsModule } from 'ng2-charts';
 import { MenuComponent } from './modulos/shared/components/menu/menu.component';
@@ -81,6 +81,8 @@ import { TableConfigEmisionGDE } from './modulos/gde/util/tableConfig.util';
 import { MaterialModule } from './material';
 //import { InformationComponent } from './modulos/sgo/components/information/information.component';
 import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
+import { LoginComponent } from './modulos/sgo/components/login/login.component';
+import { AdministracionUsuariosComponent } from './modulos/sgo/components/administracion-usuarios/administracion-usuarios.component';
 
 registerLocaleData(localeCl, 'es-CL', localeClExtra);
 
@@ -130,7 +132,8 @@ registerLocaleData(localeCl, 'es-CL', localeClExtra);
     //DataTableComponent,
     //StepperComponent,
     //InformationComponent,
-    NavbarComponent
+    NavbarComponent,
+    AdministracionUsuariosComponent
     
   ],
   imports: [

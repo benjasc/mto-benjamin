@@ -1,7 +1,8 @@
 //import { DataTableComponent} from './modulos/sgo/components/data-table/data-table.component'
 import { OrderComponent } from './modulos/shared/components/order/order.component';
 import { DashboardComponent } from './modulos/ordenes/components/dashboard/dashboard.component';
-import { LoginComponent } from './modulos/shared/components/login/login.component';
+//import { LoginComponent } from './modulos/shared/components/login/login.component';
+import { LoginComponent } from './modulos/sgo/components/login/login.component';
 import { SearchComponent } from './modulos/ordenes/components/search/search.component';
 import { BackOfficeComponent } from './back-office/back-office.component';
 import { NgModule } from '@angular/core';
@@ -25,10 +26,12 @@ import { EmisionUnitariaGdeComponent } from './modulos/gde/components/emisionUni
 //import { StepperComponent } from './modulos/sgo/components/steps/steps.component';
 //import { InformationComponent } from './modulos/sgo/components/information/information.component';
 import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
+import { AdministracionUsuariosComponent } from './modulos/sgo/components/administracion-usuarios/administracion-usuarios.component';
 
 
 const routes: Routes = [
   //{ path: 'pasos', component: StepperComponent },
+  { path: 'administracion', component: NavbarComponent },
   { path: 'sgo', component: NavbarComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'welcome', component: WelcomeComponent},
