@@ -1,16 +1,8 @@
-<nav class="navbar is-white topNav">
-    <div class="container">
-        <div id="topNav" class="navbar-menu">
-            <div class="navbar-start">
-                <p class="card-header-title">Consulta de Cuadratura BigTicket - BackOffice</p>
-            </div>
-        </div>
-    </div>
-</nav>
-<div class="color ">
+<app-main-navbar></app-main-navbar>
+<div class=" color ">
     <section class="container is-fluid ">
         <div class="columns">
-            <div class="column is-9">
+            <div class="column is-12">
                 <div class="card">
                     <p class="card-header-title">Ingrese Parámetros</p>
                     <div class="columns">
@@ -34,14 +26,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="column">
+                            <div class="field ">
+                                <a class="button is-large">
+                                    <span class="icon is-medium">
+                                        <i class="fas fa-caret-right"></i>
+                                    </span>
+                                    <span>Ejecutar Consulta</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="column is-3">
+        </div>
+    </section>
+    <section class="container is-fluid ">
+        <div class="columns">
+            <div class="column is-12">
                 <div class="card">
-                    <div class="columns">
-                        <h1>hola</h1>
-                    </div>
+                    <table datatable>
+                        <thead>
+                            <tr>
+                                <td>Hola</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Chao</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
