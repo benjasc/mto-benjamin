@@ -27,11 +27,14 @@ import { EmisionUnitariaGdeComponent } from './modulos/gde/components/emisionUni
 //import { InformationComponent } from './modulos/sgo/components/information/information.component';
 import { NavbarComponent } from './modulos/sgo/components/navbar/navbar.component';
 import { AdministracionUsuariosComponent } from './modulos/sgo/components/administracion-usuarios/administracion-usuarios.component';
-
+import {CuadraturaBigTicketComponent} from './modulos/sgo/components/cuadratura-big-ticket/cuadratura-big-ticket.component';
 
 const routes: Routes = [
   //{ path: 'pasos', component: StepperComponent },
+
   { path: 'administracion', component: AdministracionUsuariosComponent },
+  { path: 'cuadraturaBT', component: CuadraturaBigTicketComponent},
+  { path: 'administracion', component: NavbarComponent },
   { path: 'sgo', component: NavbarComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'welcome', component: WelcomeComponent},
